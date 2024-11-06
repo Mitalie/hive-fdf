@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/11/05 15:41:16 by amakinen         ###   ########.fr        #
+#    Updated: 2024/11/06 17:04:01 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,18 @@ OBJDIR := obj
 SRCDIR := src
 INCDIRS := include
 
+# MLX42
+MLX42 := lib/MLX42/build/libmlx42.a
+INCDIRS += lib/MLX42/include
+MLX42LIBS := -lglfw
+$(MLX42): mlx42-make
+	cmake lib/MLX42 -B lib/MLX42/build -DDEBUG=1
+	cmake --build lib/MLX42/build
+mlx42-clean:
+	rm -rf lib/MLX42/build
+clean: mlx42-clean
+.PHONY: mlx42-clean mlx42-make
+
 # Project files and targets
 SRCS := $(addprefix $(SRCDIR)/,\
 	main.c \
@@ -24,7 +36,8 @@ SRCS := $(addprefix $(SRCDIR)/,\
 
 OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 BINS := $(NAME)
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(MLX42)
+$(NAME): tgt_LDLIBS += $(MLX42LIBS)
 
 # Generic utility targets
 .DEFAULT_GOAL := all
