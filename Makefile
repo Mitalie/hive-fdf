@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/11/04 15:57:16 by amakinen         ###   ########.fr        #
+#    Updated: 2024/11/05 15:41:16 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME := fdf
 # Directories
 OBJDIR := obj
 SRCDIR := src
+INCDIRS := include
 
 # Project files and targets
 SRCS := $(addprefix $(SRCDIR)/,\
@@ -44,7 +45,7 @@ re: fclean all
 
 # Default compiler flags that apply to all targets
 def_CFLAGS := -Wall -Wextra -Werror
-def_CPPFLAGS := -MMD -MP -I include
+def_CPPFLAGS := -MMD -MP $(addprefix -I ,$(INCDIRS))
 
 # Add sanitizer flags if requested
 ifneq (,$(strip $(SANITIZE)))
@@ -55,7 +56,7 @@ endif
 # Combine default def_FLAGS, target specific tgt_FLAGS and user-supplied FLAGS
 # into one _FLAGS variable to be used in recipes
 flagvars = CFLAGS CPPFLAGS LDFLAGS LDLIBS
-$(foreach v,$(flagvars),$(eval _$v := $$(strip $$(def_$v) $$(tgt_$v) $$($v))))
+$(foreach v,$(flagvars),$(eval _$v = $$(strip $$(def_$v) $$(tgt_$v) $$($v))))
 
 # Recipe command to ensure directory for target exists
 mktargetdir = @mkdir -p $(@D)
