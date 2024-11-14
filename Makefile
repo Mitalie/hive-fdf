@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/11/08 17:45:53 by amakinen         ###   ########.fr        #
+#    Updated: 2024/11/14 18:09:43 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,8 @@ clean: mlx42-clean
 SRCS := $(addprefix $(SRCDIR)/,\
 	main.c \
 	line.c \
+	map.c \
+	dummy_map.c \
 )
 
 OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
