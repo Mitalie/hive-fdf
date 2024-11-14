@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/11/06 17:04:01 by amakinen         ###   ########.fr        #
+#    Updated: 2024/11/08 17:45:53 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ clean: mlx42-clean
 # Project files and targets
 SRCS := $(addprefix $(SRCDIR)/,\
 	main.c \
+	line.c \
 )
 
 OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
