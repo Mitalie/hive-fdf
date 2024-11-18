@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:45:09 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/14 18:11:30 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:13:48 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef struct s_map
 {
 	uint32_t	size_x;
 	uint32_t	size_y;
-	uint32_t	*z;
+	int32_t		*z;
 	uint32_t	*color;
 }	t_map;
 

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 16:47:12 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/14 18:10:21 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:13:39 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #define X 10
 #define Y 5
 
-static const uint32_t	g_dummy_z[X * Y] = {
+static const int32_t	g_dummy_z[X * Y] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	5, 5, 4, 4, 3, 3, 2, 2, 1, 1,
 	0, 2, 2, 1, 0, 0, 0, 0, 0, 0,
@@ -39,7 +39,7 @@ static const uint32_t	g_dummy_color[X * Y] = {
 static const t_map		g_dummy_map = {
 	X,
 	Y,
-	(uint32_t *)g_dummy_z,
+	(int32_t *)g_dummy_z,
 	(uint32_t *)g_dummy_color,
 };
 
