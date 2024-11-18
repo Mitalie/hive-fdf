@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/11/14 18:09:43 by amakinen         ###   ########.fr        #
+#    Updated: 2024/11/18 19:52:41 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ SRCS := $(addprefix $(SRCDIR)/,\
 OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 BINS := $(NAME)
 $(NAME): $(OBJS) $(MLX42)
-$(NAME): tgt_LDLIBS += $(MLX42LIBS)
+$(NAME): tgt_LDLIBS += -lm $(MLX42LIBS)
 
 # Generic utility targets
 .DEFAULT_GOAL := all
