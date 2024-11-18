@@ -6,22 +6,30 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:47:30 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/18 20:18:58 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:48:50 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map.h"
 #include "line.h"
+#include "vec_mat.h"
 
-#define INSET 0.1f
+static const t_mat4f g_transform = {{
+	(t_vec4f){{0.7071f, -0.7071f, 0.0f, 0.0f}},
+	(t_vec4f){{0.7071f, 0.7071f, 0.0f, 0.0f}},
+	(t_vec4f){{0.0f, -0.5f, 1.0f, 0.0f}},
+	(t_vec4f){{0.0f, 0.0f, 0.0f, 1.0f}},
+}};
 
 static t_point	make_point(t_map *map, uint32_t x, uint32_t y)
 {
 	return ((t_point){
-		{{
-			INSET + (1.0f - INSET - INSET) * x / (map->size_x - 1),
-			INSET + (1.0f - INSET - INSET) * y / (map->size_y - 1),
-		}},
+		mul4f_mat_vec(g_transform, (t_vec4f){{
+			(2.0f * x - (map->size_x - 1)) / 8.0f,
+			(2.0f * y - (map->size_y - 1)) / 8.0f,
+			map->z[y * map->size_x + x] / 8.0f,
+			1,
+		}}),
 		map->color[y * map->size_x + x],
 	});
 }
