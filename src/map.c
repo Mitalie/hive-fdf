@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:47:30 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/14 18:40:00 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:18:58 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@
 static t_point	make_point(t_map *map, uint32_t x, uint32_t y)
 {
 	return ((t_point){
-		INSET + (1.0f - INSET - INSET) * x / (map->size_x - 1),
-		INSET + (1.0f - INSET - INSET) * y / (map->size_y - 1),
+		{{
+			INSET + (1.0f - INSET - INSET) * x / (map->size_x - 1),
+			INSET + (1.0f - INSET - INSET) * y / (map->size_y - 1),
+		}},
 		map->color[y * map->size_x + x],
 	});
 }

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/18 19:51:22 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/18 20:11:53 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,17 @@ static void	line_horizontal(mlx_image_t *image, t_point a, t_point b)
 	float		iymin;
 	float		iymax;
 
-	slope = (b.y - a.y) / (b.x - a.x);
-	if ((slope >= 0 && a.y >= image->height) || (slope <= 0 && a.y < 0))
+	slope = (b.pos.y - a.pos.y) / (b.pos.x - a.pos.x);
+	if ((slope >= 0 && a.pos.y >= image->height) || (slope <= 0 && a.pos.y < 0))
 		return ;
-	iymin = -a.y / slope;
-	iymax = (image->height - fabsf(slope) - a.y) / slope;
-	i = fmaxf(fmaxf(0.0f, -a.x), fminf(iymin, iymax));
-	iend = fminf(fminf(image->width, b.x) - a.x, fmaxf(iymin, iymax));
+	iymin = -a.pos.y / slope;
+	iymax = (image->height - fabsf(slope) - a.pos.y) / slope;
+	i = fmaxf(fmaxf(0.0f, -a.pos.x), fminf(iymin, iymax));
+	iend = fminf(fminf(image->width, b.pos.x) - a.pos.x, fmaxf(iymin, iymax));
 	while (i < iend)
 	{
-		mlx_put_pixel(image, a.x + i, a.y + i * slope,
-			color_interp(a.color, b.color, i / (b.x - a.x)));
+		mlx_put_pixel(image, a.pos.x + i, a.pos.y + i * slope,
+			color_interp(a.color, b.color, i / (b.pos.x - a.pos.x)));
 		i++;
 	}
 }
@@ -63,37 +63,37 @@ static void	line_vertical(mlx_image_t *image, t_point a, t_point b)
 	float		ixmin;
 	float		ixmax;
 
-	slope = (b.x - a.x) / (b.y - a.y);
-	if ((slope >= 0 && a.x >= image->width) || (slope <= 0 && a.x < 0))
+	slope = (b.pos.x - a.pos.x) / (b.pos.y - a.pos.y);
+	if ((slope >= 0 && a.pos.x >= image->width) || (slope <= 0 && a.pos.x < 0))
 		return ;
-	ixmin = -a.x / slope;
-	ixmax = (image->width - fabsf(slope) - a.x) / slope;
-	i = fmaxf(fmaxf(0.0f, -a.y), fminf(ixmin, ixmax));
-	iend = fminf(fminf(image->height, b.y) - a.y, fmaxf(ixmin, ixmax));
+	ixmin = -a.pos.x / slope;
+	ixmax = (image->width - fabsf(slope) - a.pos.x) / slope;
+	i = fmaxf(fmaxf(0.0f, -a.pos.y), fminf(ixmin, ixmax));
+	iend = fminf(fminf(image->height, b.pos.y) - a.pos.y, fmaxf(ixmin, ixmax));
 	while (i < iend)
 	{
-		mlx_put_pixel(image, a.x + i * slope, a.y + i,
-			color_interp(a.color, b.color, i / (b.y - a.y)));
+		mlx_put_pixel(image, a.pos.x + i * slope, a.pos.y + i,
+			color_interp(a.color, b.color, i / (b.pos.y - a.pos.y)));
 		i++;
 	}
 }
 
 void	draw_line(mlx_image_t *image, t_point a, t_point b)
 {
-	a.x = floorf((a.x + 1.0f) * 0.5f * image->width) + 0.5f;
-	a.y = floorf((a.y + 1.0f) * 0.5f * image->height) + 0.5f;
-	b.x = floorf((b.x + 1.0f) * 0.5f * image->width) + 0.5f;
-	b.y = floorf((b.y + 1.0f) * 0.5f * image->height) + 0.5f;
-	if (fabsf(a.y - b.y) <= fabsf(a.x - b.x))
+	a.pos.x = floorf((a.pos.x + 1.0f) * 0.5f * image->width) + 0.5f;
+	a.pos.y = floorf((a.pos.y + 1.0f) * 0.5f * image->height) + 0.5f;
+	b.pos.x = floorf((b.pos.x + 1.0f) * 0.5f * image->width) + 0.5f;
+	b.pos.y = floorf((b.pos.y + 1.0f) * 0.5f * image->height) + 0.5f;
+	if (fabsf(a.pos.y - b.pos.y) <= fabsf(a.pos.x - b.pos.x))
 	{
-		if (a.x <= b.x)
+		if (a.pos.x <= b.pos.x)
 			line_horizontal(image, a, b);
 		else
 			line_horizontal(image, b, a);
 	}
 	else
 	{
-		if (a.y <= b.y)
+		if (a.pos.y <= b.pos.y)
 			line_vertical(image, a, b);
 		else
 			line_vertical(image, b, a);
