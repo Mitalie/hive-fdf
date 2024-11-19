@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/14 18:11:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:20:09 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@ typedef struct s_data {
 	mlx_image_t	*image;
 }	t_data;
 
+static const t_mat4f g_transform = {{
+	(t_vec4f){{0.7071f, -0.7071f, 0.0f, 0.0f}},
+	(t_vec4f){{0.7071f, 0.7071f, 0.0f, 0.0f}},
+	(t_vec4f){{0.0f, -0.5f, 1.0f, 0.0f}},
+	(t_vec4f){{0.0f, 0.0f, 0.0f, 1.0f}},
+}};
+
 int	main(void)
 {
 	t_data	data;
@@ -31,7 +38,7 @@ int	main(void)
 	data.image = mlx_new_image(data.mlx, data.mlx->width, data.mlx->height);
 	if (data.image)
 	{
-		draw_map(data.image, get_dummy_map());
+		draw_map(data.image, get_dummy_map(), &g_transform);
 		mlx_image_to_window(data.mlx, data.image, 0, 0);
 	}
 	mlx_loop(data.mlx);

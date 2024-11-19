@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:45:09 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/18 20:13:48 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:16:06 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdint.h>
 # include "MLX42/MLX42.h"
+# include "vec_mat.h"
 
 typedef struct s_map
 {
@@ -24,6 +25,6 @@ typedef struct s_map
 	uint32_t	*color;
 }	t_map;
 
-void	draw_map(mlx_image_t *image, t_map *map);
+void	draw_map(mlx_image_t *image, t_map *map, const t_mat4f *transform);
 
 #endif
