@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 16:48:49 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/18 14:38:57 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:13:05 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ float	dot4f(t_vec4f a, t_vec4f b)
 	);
 }
 
-static t_vec4f	row(t_mat4f m, int row)
+static t_vec4f	row(const t_mat4f *m, int row)
 {
 	return ((t_vec4f){{
-		m.col[0].v[row],
-		m.col[1].v[row],
-		m.col[2].v[row],
-		m.col[3].v[row],
+		m->col[0].v[row],
+		m->col[1].v[row],
+		m->col[2].v[row],
+		m->col[3].v[row],
 	}});
 }
 
@@ -39,7 +39,7 @@ static t_vec4f	row(t_mat4f m, int row)
 	shuffle elements around.
 */
 
-t_vec4f	mul4f_mat_vec(t_mat4f m, t_vec4f v)
+t_vec4f	mul4f_mat_vec(const t_mat4f *m, t_vec4f v)
 {
 	return ((t_vec4f){{
 		dot4f(row(m, 0), v),
@@ -49,12 +49,12 @@ t_vec4f	mul4f_mat_vec(t_mat4f m, t_vec4f v)
 	}});
 }
 
-t_mat4f	mul4f_mat_mat(t_mat4f a, t_mat4f b)
+t_mat4f	mul4f_mat_mat(const t_mat4f *a, const t_mat4f *b)
 {
 	return ((t_mat4f){{
-		mul4f_mat_vec(a, b.col[0]),
-		mul4f_mat_vec(a, b.col[1]),
-		mul4f_mat_vec(a, b.col[2]),
-		mul4f_mat_vec(a, b.col[3]),
+		mul4f_mat_vec(a, b->col[0]),
+		mul4f_mat_vec(a, b->col[1]),
+		mul4f_mat_vec(a, b->col[2]),
+		mul4f_mat_vec(a, b->col[3]),
 	}});
 }

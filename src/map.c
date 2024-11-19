@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:47:30 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/18 20:48:50 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:14:17 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static const t_mat4f g_transform = {{
 static t_point	make_point(t_map *map, uint32_t x, uint32_t y)
 {
 	return ((t_point){
-		mul4f_mat_vec(g_transform, (t_vec4f){{
+		mul4f_mat_vec(&g_transform, (t_vec4f){{
 			(2.0f * x - (map->size_x - 1)) / 8.0f,
 			(2.0f * y - (map->size_y - 1)) / 8.0f,
 			map->z[y * map->size_x + x] / 8.0f,
