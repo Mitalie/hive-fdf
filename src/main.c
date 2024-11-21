@@ -6,19 +6,21 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/19 15:54:36 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:03:51 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
+#include <stdlib.h>
 #include "MLX42/MLX42.h"
 #include "line.h"
-#include "map.h"
-#include "dummy_map.h"
+#include "mesh.h"
+#include "dummy_mesh.h"
 
 typedef struct s_data {
 	mlx_t		*mlx;
 	mlx_image_t	*image;
+	t_mesh		mesh;
 	float		angle_deg;
 }	t_data;
 
@@ -37,7 +39,7 @@ static void	clear_image(mlx_image_t *image)
 	}
 }
 
-static void	draw_with_angle(mlx_image_t *image, t_map *map, float angle_rad)
+static void	draw_with_angle(mlx_image_t *image, t_mesh *mesh, float angle_rad)
 {
 	t_mat4f	transform;
 
@@ -48,7 +50,7 @@ static void	draw_with_angle(mlx_image_t *image, t_map *map, float angle_rad)
 			(t_vec4f){{0.0f, 0.0f, 0.0f, 1.0f}},
 		});
 	clear_image(image);
-	draw_map(image, map, &transform);
+	draw_mesh(image, mesh, &transform);
 }
 
 static void	key_hook(mlx_key_data_t key_data, void *param)
@@ -69,7 +71,7 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 	else if (key_data.key == MLX_KEY_RIGHT && (
 			key_data.action == MLX_PRESS || key_data.action == MLX_REPEAT))
 		fdf_data->angle_deg -= 5;
-	draw_with_angle(fdf_data->image, get_dummy_map(),
+	draw_with_angle(fdf_data->image, &fdf_data->mesh,
 		fdf_data->angle_deg / 180 * 3.1415926535);
 }
 
@@ -77,6 +79,8 @@ int	main(void)
 {
 	t_data	data;
 
+	if (!load_dummy_mesh(&data.mesh))
+		return (2);
 	data.mlx = mlx_init(1500, 1125, "fdf", true);
 	if (!data.mlx)
 		return (1);
@@ -85,10 +89,12 @@ int	main(void)
 	if (data.image)
 	{
 		mlx_key_hook(data.mlx, key_hook, &data);
-		draw_with_angle(data.image, get_dummy_map(),
+		draw_with_angle(data.image, &data.mesh,
 			data.angle_deg / 180 * 3.1415926535);
 		mlx_image_to_window(data.mlx, data.image, 0, 0);
 	}
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
+	free(data.mesh.lines);
+	free(data.mesh.vertices);
 }

@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/11/18 20:15:37 by amakinen         ###   ########.fr        #
+#    Updated: 2024/11/21 19:00:45 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,8 +33,8 @@ clean: mlx42-clean
 SRCS := $(addprefix $(SRCDIR)/,\
 	main.c \
 	line.c \
-	map.c \
-	dummy_map.c \
+	mesh.c \
+	dummy_mesh.c \
 	vec_mat.c \
 )
 
