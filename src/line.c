@@ -6,12 +6,13 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/18 20:11:53 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:22:15 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "line.h"
 #include <math.h>
+#include <stdint.h>
 
 static uint32_t	color_interp(uint32_t a, uint32_t b, float t)
 {
@@ -32,7 +33,7 @@ static uint32_t	color_interp(uint32_t a, uint32_t b, float t)
 	return (out);
 }
 
-static void	line_horizontal(mlx_image_t *image, t_point a, t_point b)
+static void	line_horizontal(mlx_image_t *image, t_vertex a, t_vertex b)
 {
 	float		slope;
 	int32_t		i;
@@ -55,7 +56,7 @@ static void	line_horizontal(mlx_image_t *image, t_point a, t_point b)
 	}
 }
 
-static void	line_vertical(mlx_image_t *image, t_point a, t_point b)
+static void	line_vertical(mlx_image_t *image, t_vertex a, t_vertex b)
 {
 	float		slope;
 	int32_t		i;
@@ -78,7 +79,7 @@ static void	line_vertical(mlx_image_t *image, t_point a, t_point b)
 	}
 }
 
-void	draw_line(mlx_image_t *image, t_point a, t_point b)
+void	draw_line(mlx_image_t *image, t_vertex a, t_vertex b)
 {
 	a.pos.x = floorf((a.pos.x + 1.0f) * 0.5f * image->width) + 0.5f;
 	a.pos.y = floorf((a.pos.y + 1.0f) * 0.5f * image->height) + 0.5f;

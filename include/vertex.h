@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   line.h                                             :+:      :+:    :+:   */
+/*   vertex.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 15:02:44 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/21 18:20:10 by amakinen         ###   ########.fr       */
+/*   Created: 2024/11/21 18:18:28 by amakinen          #+#    #+#             */
+/*   Updated: 2024/11/21 18:21:13 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LINE_H
-# define LINE_H
+#ifndef VERTEX_H
+# define VERTEX_H
 
-# include "MLX42/MLX42.h"
-# include "vertex.h"
+# include <stdint.h>
+# include "vec_mat.h"
 
-void	draw_line(mlx_image_t *image, t_vertex a, t_vertex b);
+typedef struct s_vertex
+{
+	t_vec4f		pos;
+	uint32_t	color;
+}	t_vertex;
+
 
 #endif

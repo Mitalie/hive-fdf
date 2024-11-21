@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:47:30 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/19 15:20:15 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/21 18:20:47 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 #include "line.h"
 #include "vec_mat.h"
 
-static t_point	make_point(
+static t_vertex	make_point(
 	t_map *map, const t_mat4f *transform, uint32_t x, uint32_t y)
 {
-	return ((t_point){
+	return ((t_vertex){
 		mul4f_mat_vec(transform, (t_vec4f){{
 			(2.0f * x - (map->size_x - 1)) / 8.0f,
 			(2.0f * y - (map->size_y - 1)) / 8.0f,
@@ -32,8 +32,8 @@ static void	draw_column(
 	mlx_image_t *image, t_map *map, const t_mat4f *transform, uint32_t x)
 {
 	uint32_t	y;
-	t_point		curr;
-	t_point		next;
+	t_vertex	curr;
+	t_vertex	next;
 
 	y = 0;
 	next = make_point(map, transform, x, y);
@@ -49,8 +49,8 @@ static void	draw_row(
 	mlx_image_t *image, t_map *map, const t_mat4f *transform, uint32_t y)
 {
 	uint32_t	x;
-	t_point		curr;
-	t_point		next;
+	t_vertex	curr;
+	t_vertex	next;
 
 	x = 0;
 	next = make_point(map, transform, x, y);
