@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:52:16 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/22 18:19:11 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/22 18:41:24 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ typedef struct s_map_entry
 	int32_t		z;
 	uint32_t	color;
 	bool		is_end;
-	bool		is_invalid;
 	bool		is_newline;
-	bool		has_color;
 }	t_map_entry;
 
 # define READ_BUF_SIZE 1024
@@ -36,7 +34,7 @@ typedef struct s_map_reader
 	size_t	start;
 	size_t	len;
 	int		fd;
-	char	buf[READ_BUF_SIZE];
+	char	buf[READ_BUF_SIZE + 1]; // +1 hack for strtol
 }	t_map_reader;
 
 bool	map_reader_open(t_map_reader *reader, const char *filename);

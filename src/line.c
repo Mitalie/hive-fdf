@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/21 18:22:15 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/22 19:30:00 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ static void	line_horizontal(mlx_image_t *image, t_vertex a, t_vertex b)
 	slope = (b.pos.y - a.pos.y) / (b.pos.x - a.pos.x);
 	if ((slope >= 0 && a.pos.y >= image->height) || (slope <= 0 && a.pos.y < 0))
 		return ;
-	iymin = -a.pos.y / slope;
-	iymax = (image->height - fabsf(slope) - a.pos.y) / slope;
+	iymin = roundf(-a.pos.y / slope);
+	iymax = roundf((image->height - fabsf(slope) - a.pos.y) / slope);
 	i = fmaxf(fmaxf(0.0f, -a.pos.x), fminf(iymin, iymax));
 	iend = fminf(fminf(image->width, b.pos.x) - a.pos.x, fmaxf(iymin, iymax));
 	while (i < iend)
@@ -67,8 +67,8 @@ static void	line_vertical(mlx_image_t *image, t_vertex a, t_vertex b)
 	slope = (b.pos.x - a.pos.x) / (b.pos.y - a.pos.y);
 	if ((slope >= 0 && a.pos.x >= image->width) || (slope <= 0 && a.pos.x < 0))
 		return ;
-	ixmin = -a.pos.x / slope;
-	ixmax = (image->width - fabsf(slope) - a.pos.x) / slope;
+	ixmin = roundf(-a.pos.x / slope);
+	ixmax = roundf((image->width - fabsf(slope) - a.pos.x) / slope);
 	i = fmaxf(fmaxf(0.0f, -a.pos.y), fminf(ixmin, ixmax));
 	iend = fminf(fminf(image->height, b.pos.y) - a.pos.y, fmaxf(ixmin, ixmax));
 	while (i < iend)

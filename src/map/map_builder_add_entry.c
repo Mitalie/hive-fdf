@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:13:19 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/22 18:13:43 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/22 19:15:24 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,6 @@ static bool	map_builder_append_line(t_map_builder *builder, uint32_t offset)
 
 bool	map_builder_add_entry(t_map_builder *builder, t_map_entry *entry)
 {
-	t_line		line;
-
-	if (entry->is_invalid)
-		return (false);
 	if (entry->is_newline)
 	{
 		builder->last_x = builder->x;
@@ -54,8 +50,9 @@ bool	map_builder_add_entry(t_map_builder *builder, t_map_entry *entry)
 	if (builder->x > 0)
 		if (!map_builder_append_line(builder, 1))
 			return (false);
-	if (builder->x <= builder->last_x)
-		if (!map_builder_append_line(builder, 1 + builder->last_x))
+	if (builder->x < builder->last_x)
+		if (!map_builder_append_line(builder, builder->last_x))
 			return (false);
+	builder->x++;
 	return (true);
 }

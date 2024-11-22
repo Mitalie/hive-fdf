@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/21 19:03:51 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/22 19:44:54 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "MLX42/MLX42.h"
 #include "line.h"
 #include "mesh.h"
-#include "dummy_mesh.h"
+#include "map.h"
 
 typedef struct s_data {
 	mlx_t		*mlx;
@@ -41,14 +41,23 @@ static void	clear_image(mlx_image_t *image)
 
 static void	draw_with_angle(mlx_image_t *image, t_mesh *mesh, float angle_rad)
 {
+	t_mat4f	model;
+	t_mat4f	projection;
 	t_mat4f	transform;
 
-	transform = ((t_mat4f){
+	model = ((t_mat4f){
+			(t_vec4f){{1.0f/20, 0.0f, 0.0f, 0.0f}},
+			(t_vec4f){{0.0f, 1.0f/20, 0.0f, 0.0f}},
+			(t_vec4f){{0.0f, 0.0f, 1.0f/10, 0.0f}},
+			(t_vec4f){{-1.0f, -1.0f, -1.0f, 1.0f}},
+		});
+	projection = ((t_mat4f){
 			(t_vec4f){{cosf(angle_rad), sinf(angle_rad), 0.0f, 0.0f}},
 			(t_vec4f){{-sinf(angle_rad), cosf(angle_rad), 0.0f, 0.0f}},
 			(t_vec4f){{0.0f, -0.5f, 1.0f, 0.0f}},
 			(t_vec4f){{0.0f, 0.0f, 0.0f, 1.0f}},
 		});
+	transform = mul4f_mat_mat(&projection, &model);
 	clear_image(image);
 	draw_mesh(image, mesh, &transform);
 }
@@ -75,11 +84,13 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 		fdf_data->angle_deg / 180 * 3.1415926535);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_data	data;
 
-	if (!load_dummy_mesh(&data.mesh))
+	if (argc != 2)
+		return (3);
+	if (!map_load(&data.mesh, argv[1]))
 		return (2);
 	data.mlx = mlx_init(1500, 1125, "fdf", true);
 	if (!data.mlx)

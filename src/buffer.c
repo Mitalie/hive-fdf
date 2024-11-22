@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 15:47:00 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/22 17:43:20 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/22 19:02:56 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ static bool	buffer_ensure_space(t_buffer *b, size_t min_space)
 		return (false);
 	i = 0;
 	while (i < b->len)
+	{
 		new_buf[i] = b->buf[i];
+		i++;
+	}
 	free(b->buf);
 	b->buf = new_buf;
 	b->size = new_size;
@@ -67,7 +70,10 @@ bool	buffer_append(t_buffer *b, void *data, size_t len)
 		return (false);
 	i = 0;
 	while (i < len)
+	{
 		b->buf[i + b->len] = ((char *)data)[i];
+		i++;
+	}
 	b->len += len;
 	return (true);
 }
@@ -82,7 +88,10 @@ void	*buffer_finalize(t_buffer *b)
 		return (0);
 	i = 0;
 	while (i < b->len)
+	{
 		new_buf[i] = b->buf[i];
+		i++;
+	}
 	buffer_release(b);
 	return (new_buf);
 }
