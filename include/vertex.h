@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:18:28 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/21 18:21:13 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/22 17:43:53 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,5 @@ typedef struct s_vertex
 	t_vec4f		pos;
 	uint32_t	color;
 }	t_vertex;
-
 
 #endif
