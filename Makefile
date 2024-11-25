@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/11/21 19:00:45 by amakinen         ###   ########.fr        #
+#    Updated: 2024/11/25 18:42:41 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,12 @@ SRCS := $(addprefix $(SRCDIR)/,\
 	main.c \
 	line.c \
 	mesh.c \
-	dummy_mesh.c \
+	buffer.c \
+	map/map_load.c \
+	map/map_reader.c \
+	map/map_builder.c \
+	map/map_builder_add_entry.c \
+	util/parse_int.c \
 	vec_mat.c \
 )
 
