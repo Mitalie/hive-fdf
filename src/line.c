@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/21 18:22:15 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/25 14:48:24 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static uint32_t	color_interp(uint32_t a, uint32_t b, float t)
 	{
 		ta = (a >> i & 0xff) * (1 - t);
 		tb = (b >> i & 0xff) * t;
-		out |= (uint8_t)(ta + tb) << i;
+		out |= (uint32_t)fminf(ta + tb, 0xff) << i;
 		i += 8;
 	}
 	return (out);
