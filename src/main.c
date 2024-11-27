@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/27 17:29:12 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/27 17:50:13 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,23 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 static void	loop_hook(void *param)
 {
 	t_data	*fdf_data;
+	mlx_t	*mlx;
 
 	fdf_data = param;
+	mlx = fdf_data->mlx;
+	if (fdf_data->image->width != (uint32_t)mlx->width
+		|| fdf_data->image->height != (uint32_t)mlx->height)
+	{
+		mlx_delete_image(mlx, fdf_data->image);
+		fdf_data->image = mlx_new_image(mlx, mlx->width, mlx->height);
+		if (!fdf_data->image)
+		{
+			mlx_close_window(mlx);
+			return ;
+		}
+		mlx_image_to_window(mlx, fdf_data->image, 0, 0);
+		fdf_data->need_redraw = true;
+	}
 	if (fdf_data->need_redraw)
 		draw_with_angle(fdf_data->image, &fdf_data->mesh,
 			fdf_data->azimuth_deg / 180 * 3.1415926535,
