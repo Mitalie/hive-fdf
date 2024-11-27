@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:45:51 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/26 15:33:20 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/27 14:11:21 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ bool	file_reader_fill_buffer(t_file_reader *reader, size_t min_length)
 	reader->end = reader->start + len;
 	while (!reader->eof && reader->end < reader->start + min_length)
 	{
-		ret = read(reader->fd, reader->end, reader->buf_size - i);
+		ret = read(reader->fd, reader->end, reader->buf_size - len);
 		if (ret < 0 && errno == EINTR)
 			continue ;
 		if (ret < 0)

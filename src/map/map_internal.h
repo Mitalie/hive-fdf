@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:52:16 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/26 15:57:53 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/27 14:05:18 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 # define MAP_INTERNAL_H
 
 # include <stdbool.h>
-# include <stddef.h>
 # include <stdint.h>
 # include "buffer.h"
-# include "file_reader.h"
 # include "mesh.h"
 
 /*
@@ -35,18 +33,18 @@ typedef struct s_map_entry
 /*
 	Map builder accumulates entries, keeping track of X and Y positions and
 	automatically connecting the vertices with lines along the grid. When done,
-	it centers the model on origin and converts the data into t_mesh.
+	it centers the model on origin and packs the data into t_mesh.
 */
 typedef struct s_map_builder
 {
 	t_buffer	vertices;
 	t_buffer	lines;
+	uint32_t	n_vertices;
+	uint32_t	n_lines;
 	uint32_t	y;
 	uint32_t	x;
 	uint32_t	last_x;
 	uint32_t	max_x;
-	uint32_t	n_vertices;
-	uint32_t	n_lines;
 }	t_map_builder;
 
 void	map_builder_init(t_map_builder *builder);
