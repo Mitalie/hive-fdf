@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/21 19:03:51 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:42:23 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "MLX42/MLX42.h"
 #include "line.h"
 #include "mesh.h"
-#include "dummy_mesh.h"
+#include "map.h"
 
 typedef struct s_data {
 	mlx_t		*mlx;
@@ -75,11 +75,13 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 		fdf_data->angle_deg / 180 * 3.1415926535);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_data	data;
 
-	if (!load_dummy_mesh(&data.mesh))
+	if (argc != 2)
+		return (3);
+	if (!map_load(&data.mesh, argv[1]))
 		return (2);
 	data.mlx = mlx_init(1500, 1125, "fdf", true);
 	if (!data.mlx)
