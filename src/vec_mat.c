@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 16:48:49 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/22 17:44:33 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:06:28 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,10 @@ float	dot4f(t_vec4f a, t_vec4f b)
 static t_vec4f	row(const t_mat4f *m, int row)
 {
 	return ((t_vec4f){
-		{
-			m->col[0].v[row],
-			m->col[1].v[row],
-			m->col[2].v[row],
-			m->col[3].v[row],
-		}
+		.v[0] = m->col[0].v[row],
+		.v[1] = m->col[1].v[row],
+		.v[2] = m->col[2].v[row],
+		.v[3] = m->col[3].v[row],
 	});
 }
 
@@ -44,23 +42,19 @@ static t_vec4f	row(const t_mat4f *m, int row)
 t_vec4f	mul4f_mat_vec(const t_mat4f *m, t_vec4f v)
 {
 	return ((t_vec4f){
-		{
-			dot4f(row(m, 0), v),
-			dot4f(row(m, 1), v),
-			dot4f(row(m, 2), v),
-			dot4f(row(m, 3), v),
-		}
+		.v[0] = dot4f(row(m, 0), v),
+		.v[1] = dot4f(row(m, 1), v),
+		.v[2] = dot4f(row(m, 2), v),
+		.v[3] = dot4f(row(m, 3), v),
 	});
 }
 
 t_mat4f	mul4f_mat_mat(const t_mat4f *a, const t_mat4f *b)
 {
 	return ((t_mat4f){
-		{
-			mul4f_mat_vec(a, b->col[0]),
-			mul4f_mat_vec(a, b->col[1]),
-			mul4f_mat_vec(a, b->col[2]),
-			mul4f_mat_vec(a, b->col[3]),
-		}
+		.col[0] = mul4f_mat_vec(a, b->col[0]),
+		.col[1] = mul4f_mat_vec(a, b->col[1]),
+		.col[2] = mul4f_mat_vec(a, b->col[2]),
+		.col[3] = mul4f_mat_vec(a, b->col[3]),
 	});
 }
