@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/27 14:36:48 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/02 18:06:03 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,17 @@ static void	line_vertical(mlx_image_t *image, t_vertex a, t_vertex b)
 	}
 }
 
+/*
+	We generally use axes +X = right, +Y = up, +Z = behind but the pixel buffer
+	uses +X = right, +Y = down so invert Y here.
+*/
+
 void	draw_line(mlx_image_t *image, t_vertex a, t_vertex b)
 {
 	a.pos.x = floorf((a.pos.x + 1.0f) * 0.5f * image->width) + 0.5f;
-	a.pos.y = floorf((a.pos.y + 1.0f) * 0.5f * image->height) + 0.5f;
+	a.pos.y = floorf((-a.pos.y + 1.0f) * 0.5f * image->height) + 0.5f;
 	b.pos.x = floorf((b.pos.x + 1.0f) * 0.5f * image->width) + 0.5f;
-	b.pos.y = floorf((b.pos.y + 1.0f) * 0.5f * image->height) + 0.5f;
+	b.pos.y = floorf((-b.pos.y + 1.0f) * 0.5f * image->height) + 0.5f;
 	if (fabsf(a.pos.y - b.pos.y) <= fabsf(a.pos.x - b.pos.x))
 	{
 		if (a.pos.x <= b.pos.x)
