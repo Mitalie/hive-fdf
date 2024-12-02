@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/02 16:23:31 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/02 17:06:49 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS := $(addprefix $(SRCDIR)/,\
 	parse_int.c \
 	vec_mat.c \
 	vec_mat_helper.c \
+	projection.c \
 )
 
 OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
