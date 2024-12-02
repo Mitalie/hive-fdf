@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/02 18:06:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/02 20:59:09 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@ static uint32_t	color_interp(uint32_t a, uint32_t b, float t)
 	return (out);
 }
 
+/*
+	TODO: Perspective correct colour interpolation.
+	TODO: Doing Z clipping inside the line drawing loop is suboptimal. Consider
+		clipping before calling line_horizontal/line_vertical.
+	TODO: Implement Z buffer and Z test.
+*/
+
+#include <stdio.h>
+
 static void	line_horizontal(mlx_image_t *image, t_vertex a, t_vertex b)
 {
 	float		slope;
@@ -50,8 +59,9 @@ static void	line_horizontal(mlx_image_t *image, t_vertex a, t_vertex b)
 	iend = fminf(fminf(image->width, b.pos.x) - a.pos.x, fmaxf(iymin, iymax));
 	while (i < iend)
 	{
-		mlx_put_pixel(image, a.pos.x + i, a.pos.y + i * slope,
-			color_interp(a.color, b.color, i / (b.pos.x - a.pos.x)));
+		if (a.pos.z + i * (b.pos.z - a.pos.z) / (b.pos.x - a.pos.x) > 0)
+			mlx_put_pixel(image, a.pos.x + i, a.pos.y + i * slope,
+				color_interp(a.color, b.color, i / (b.pos.x - a.pos.x)));
 		i++;
 	}
 }
@@ -73,10 +83,30 @@ static void	line_vertical(mlx_image_t *image, t_vertex a, t_vertex b)
 	iend = fminf(fminf(image->height, b.pos.y) - a.pos.y, fmaxf(ixmin, ixmax));
 	while (i < iend)
 	{
-		mlx_put_pixel(image, a.pos.x + i * slope, a.pos.y + i,
-			color_interp(a.color, b.color, i / (b.pos.y - a.pos.y)));
+		if (a.pos.z + i * (b.pos.z - a.pos.z) / (b.pos.y - a.pos.y) > 0)
+			mlx_put_pixel(image, a.pos.x + i * slope, a.pos.y + i,
+				color_interp(a.color, b.color, i / (b.pos.y - a.pos.y)));
 		i++;
 	}
+}
+
+/*
+	TODO: Do clipping before divide. Without abs, negative w negates X and Y
+		which makes them totally wrong. If entire line is behind, nothing is
+		visible because of z-clipping, but if part of the line is in front it
+		is drawn from one correct point towards one wrong point.
+*/
+
+static t_vec4f	perspective_divide(t_vec4f pos)
+{
+	float	w_recip;
+
+	w_recip = 1.0f / pos.w;
+	return (vec4f(
+			pos.x * fabsf(w_recip),
+			pos.y * fabsf(w_recip),
+			pos.z * w_recip,
+			w_recip));
 }
 
 /*
@@ -86,6 +116,8 @@ static void	line_vertical(mlx_image_t *image, t_vertex a, t_vertex b)
 
 void	draw_line(mlx_image_t *image, t_vertex a, t_vertex b)
 {
+	a.pos = perspective_divide(a.pos);
+	b.pos = perspective_divide(b.pos);
 	a.pos.x = floorf((a.pos.x + 1.0f) * 0.5f * image->width) + 0.5f;
 	a.pos.y = floorf((-a.pos.y + 1.0f) * 0.5f * image->height) + 0.5f;
 	b.pos.x = floorf((b.pos.x + 1.0f) * 0.5f * image->width) + 0.5f;

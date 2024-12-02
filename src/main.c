@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/02 18:29:31 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/02 21:00:42 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,37 @@ static void	draw_with_angle(mlx_image_t *image, t_mesh *mesh,
 	t_mat4f	transform;
 	t_mat4f	next;
 
+	// move camera at (10,10,10) to origin
 	transform = mat4f(
-			vec4f(1.0f / 20, 0.0f, 0.0f, 0.0f),
-			vec4f(0.0f, 1.0f / 20, 0.0f, 0.0f),
-			vec4f(0.0f, 0.0f, 1.0f / 20, 0.0f),
+			vec4f(1.0f, 0.0f, 0.0f, -10.0f),
+			vec4f(0.0f, 1.0f, 0.0f, -10.0f),
+			vec4f(0.0f, 0.0f, 1.0f, -10.0f),
 			vec4f(0.0f, 0.0f, 0.0f, 1.0f));
+	// rotate in horizontal plane
 	next = mat4f(
 			vec4f(cosf(azimuth_rad), 0.0f, sinf(azimuth_rad), 0.0f),
 			vec4f(0.0f, 1.0f, 0.0f, 0.0f),
 			vec4f(-sinf(azimuth_rad), 0.0f, cosf(azimuth_rad), 0.0f),
 			vec4f(0.0f, 0.0f, 0.0f, 1.0f));
 	transform = mul4f_mat_mat(&next, &transform);
+	// tilt vertical towards camera (view from above)
 	next = mat4f(
 			vec4f((float)image->height / image->width, 0.0f, 0.0f, 0.0f),
 			vec4f(0.0f, cosf(elevation_rad), -sinf(elevation_rad), 0.0f),
 			vec4f(0.0f, sinf(elevation_rad), cosf(elevation_rad), 0.0f),
 			vec4f(0.0f, 0.0f, 0.0f, 1.0f));
+	transform = mul4f_mat_mat(&next, &transform);
+	// adjust for aspect ratio, put -z into w for perspective divide, w to z to store depth as -1/z
+	// this maps
+	// * z = -inf (far in front) to d = 0
+	// * z = -1 (near in front) to d = 1
+	// * -1 < z < 0 (very near in front) to 1 < d < +inf
+	// * z > 0 (behind) to d < 0
+	next = mat4f(
+			vec4f(2 * (float)image->height / image->width, 0.0f, 0.0f, 0.0f),
+			vec4f(0.0f, 2, 0.0f, 0.0f),
+			vec4f(0.0f, 0.0f, 0.0f, 1.0f),
+			vec4f(0.0f, 0.0f, -1.0f, 0.0f));
 	transform = mul4f_mat_mat(&next, &transform);
 	clear_image(image);
 	draw_mesh(image, mesh, &transform);
