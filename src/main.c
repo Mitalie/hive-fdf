@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/27 17:50:13 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:34:14 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,25 +55,22 @@ static void	draw_with_angle(mlx_image_t *image, t_mesh *mesh,
 	t_mat4f	transform;
 	t_mat4f	next;
 
-	transform = (t_mat4f){
-		(t_vec4f){{1.0f / 20, 0.0f, 0.0f, 0.0f}},
-		(t_vec4f){{0.0f, 0.0f, -1.0f / 20, 0.0f}},
-		(t_vec4f){{0.0f, -1.0f / 20, 0.0f, 0.0f}},
-		(t_vec4f){{0.0f, 0.0f, 0.0f, 1.0f}},
-	};
-	next = (t_mat4f){
-		(t_vec4f){{cosf(azimuth_rad), 0.0f, sinf(azimuth_rad), 0.0f}},
-		(t_vec4f){{0.0f, 1.0f, 0.0f, 0.0f}},
-		(t_vec4f){{-sinf(azimuth_rad), 0.0f, cosf(azimuth_rad), 0.0f}},
-		(t_vec4f){{0.0f, 0.0f, 0.0f, 1.0f}},
-	};
+	transform = mat4f(
+			vec4f(1.0f / 20, 0.0f, 0.0f, 0.0f),
+			vec4f(0.0f, 0.0f, -1.0f / 20, 0.0f),
+			vec4f(0.0f, -1.0f / 20, 0.0f, 0.0f),
+			vec4f(0.0f, 0.0f, 0.0f, 1.0f));
+	next = mat4f(
+			vec4f(cosf(azimuth_rad), 0.0f, -sinf(azimuth_rad), 0.0f),
+			vec4f(0.0f, 1.0f, 0.0f, 0.0f),
+			vec4f(sinf(azimuth_rad), 0.0f, cosf(azimuth_rad), 0.0f),
+			vec4f(0.0f, 0.0f, 0.0f, 1.0f));
 	transform = mul4f_mat_mat(&next, &transform);
-	next = (t_mat4f){
-		(t_vec4f){{(float)image->height / image->width, 0.0f, 0.0f, 0.0f}},
-		(t_vec4f){{0.0f, cosf(elevation_rad), sinf(elevation_rad), 0.0f}},
-		(t_vec4f){{0.0f, -sinf(elevation_rad), cosf(elevation_rad), 0.0f}},
-		(t_vec4f){{0.0f, 0.0f, 0.0f, 1.0f}},
-	};
+	next = mat4f(
+			vec4f((float)image->height / image->width, 0.0f, 0.0f, 0.0f),
+			vec4f(0.0f, cosf(elevation_rad), -sinf(elevation_rad), 0.0f),
+			vec4f(0.0f, sinf(elevation_rad), cosf(elevation_rad), 0.0f),
+			vec4f(0.0f, 0.0f, 0.0f, 1.0f));
 	transform = mul4f_mat_mat(&next, &transform);
 	clear_image(image);
 	draw_mesh(image, mesh, &transform);

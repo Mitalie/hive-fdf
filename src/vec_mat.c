@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 16:48:49 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/02 15:06:28 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:18:28 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,15 @@ t_mat4f	mul4f_mat_mat(const t_mat4f *a, const t_mat4f *b)
 		.col[1] = mul4f_mat_vec(a, b->col[1]),
 		.col[2] = mul4f_mat_vec(a, b->col[2]),
 		.col[3] = mul4f_mat_vec(a, b->col[3]),
+	});
+}
+
+t_mat4f	transpose4f(const t_mat4f *m)
+{
+	return ((t_mat4f){
+		.col[0] = row(m, 0),
+		.col[1] = row(m, 1),
+		.col[2] = row(m, 2),
+		.col[3] = row(m, 3),
 	});
 }
