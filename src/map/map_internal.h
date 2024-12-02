@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:52:16 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/27 14:05:18 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:56:16 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@
 */
 typedef struct s_map_entry
 {
-	int32_t		z;
+	int32_t		height;
 	uint32_t	color;
 	bool		is_end;
 	bool		is_newline;
 }	t_map_entry;
 
 /*
-	Map builder accumulates entries, keeping track of X and Y positions and
+	Map builder accumulates entries, keeping track of X and Z positions and
 	automatically connecting the vertices with lines along the grid. When done,
 	it centers the model on origin and packs the data into t_mesh.
 */
@@ -41,7 +41,7 @@ typedef struct s_map_builder
 	t_buffer	lines;
 	uint32_t	n_vertices;
 	uint32_t	n_lines;
-	uint32_t	y;
+	uint32_t	z;
 	uint32_t	x;
 	uint32_t	last_x;
 	uint32_t	max_x;

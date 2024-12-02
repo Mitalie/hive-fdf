@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/02 18:21:28 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/02 18:29:31 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	clear_image(mlx_image_t *image)
 }
 
 /*
-	1. shrink model and swap axes to match world XYZ
+	1. shrink model
 	2. rotate horizontal plane
 	3. tilt and scale horizontal axis to match aspect ratio
 
@@ -57,8 +57,8 @@ static void	draw_with_angle(mlx_image_t *image, t_mesh *mesh,
 
 	transform = mat4f(
 			vec4f(1.0f / 20, 0.0f, 0.0f, 0.0f),
-			vec4f(0.0f, 0.0f, 1.0f / 20, 0.0f),
 			vec4f(0.0f, 1.0f / 20, 0.0f, 0.0f),
+			vec4f(0.0f, 0.0f, 1.0f / 20, 0.0f),
 			vec4f(0.0f, 0.0f, 0.0f, 1.0f));
 	next = mat4f(
 			vec4f(cosf(azimuth_rad), 0.0f, sinf(azimuth_rad), 0.0f),

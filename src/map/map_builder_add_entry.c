@@ -6,20 +6,20 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:13:19 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/25 19:44:20 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:57:51 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map_internal.h"
 
 static bool	map_builder_append_vertex(
-	t_map_builder *builder, int32_t z, uint32_t color)
+	t_map_builder *builder, int32_t height, uint32_t color)
 {
 	t_vertex	vertex;
 
 	vertex.pos.x = builder->x;
-	vertex.pos.y = builder->y;
-	vertex.pos.z = z;
+	vertex.pos.y = height;
+	vertex.pos.z = builder->z;
 	vertex.pos.w = 1;
 	vertex.color = color;
 	builder->n_vertices++;
@@ -44,12 +44,12 @@ bool	map_builder_add_entry(t_map_builder *builder, t_map_entry *entry)
 		if (builder->max_x < builder->x)
 			builder->max_x = builder->x;
 		builder->x = 0;
-		builder->y++;
+		builder->z++;
 		return (true);
 	}
 	if (entry->is_end)
 		return (true);
-	if (!map_builder_append_vertex(builder, entry->z, entry->color))
+	if (!map_builder_append_vertex(builder, entry->height, entry->color))
 		return (false);
 	if (builder->x > 0)
 		if (!map_builder_append_line(builder, 1))

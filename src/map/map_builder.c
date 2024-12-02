@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:12:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/26 15:50:46 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:59:01 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	map_builder_init(t_map_builder *builder)
 {
 	buffer_init(&builder->vertices);
 	buffer_init(&builder->lines);
-	builder->y = 0;
+	builder->z = 0;
 	builder->x = 0;
 	builder->last_x = 0;
 	builder->max_x = 0;
@@ -32,21 +32,21 @@ void	map_builder_release(t_map_builder *builder)
 }
 
 /*
-	Center the model on X and Y axes
+	Center the model in the horizontal plane
 */
 static void	map_builder_adjust_vertices(t_map_builder *builder, t_mesh *mesh)
 {
 	uint32_t	i;
 	float		adj_x;
-	float		adj_y;
+	float		adj_z;
 
 	adj_x = (builder->max_x - 1) * -0.5f;
-	adj_y = (builder->y - 1) * -0.5f;
+	adj_z = (builder->z - 1) * -0.5f;
 	i = 0;
 	while (i < builder->n_vertices)
 	{
 		mesh->vertices[i].pos.x += adj_x;
-		mesh->vertices[i].pos.y += adj_y;
+		mesh->vertices[i].pos.z += adj_z;
 		i++;
 	}
 }

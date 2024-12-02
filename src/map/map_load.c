@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:10:54 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/27 14:15:38 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:53:31 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static bool	map_load_parse_entry(t_file_reader *reader, t_map_entry *entry)
 
 	entry->color = 0xffffffff;
 	len = reader->end - reader->start;
-	if (!parse_int32(reader->start, len, &parsed_len, &entry->z))
+	if (!parse_int32(reader->start, len, &parsed_len, &entry->height))
 		return (false);
 	reader->start += parsed_len;
 	if (reader->start == reader->end
