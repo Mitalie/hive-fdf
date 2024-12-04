@@ -1,17 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec_mat.c                                          :+:      :+:    :+:   */
+/*   mat.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 16:48:49 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/04 17:52:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:08:30 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec_mat.h"
 
+/*
+	This function would logically belong to vec.c, but having it visible in this
+	translation unit is critical for optimization of mul_mv4 and mul_mm4 without
+	relying on link-time optimization.
+*/
 float	dot4(t_vec4 a, t_vec4 b)
 {
 	return (
