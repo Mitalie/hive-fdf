@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 15:22:54 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/02 16:33:25 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:23:02 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ float	dot4f(t_vec4f a, t_vec4f b);
 t_vec4f	mul4f_mat_vec(const t_mat4f *m, t_vec4f v);
 t_mat4f	mul4f_mat_mat(const t_mat4f *a, const t_mat4f *b);
 t_mat4f	transpose4f(const t_mat4f *m);
+t_vec4f	mul4f_s_vec(float s, t_vec4f v);
+t_vec4f	add4f(t_vec4f a, t_vec4f b);
 
 t_vec4f	vec4f(float x, float y, float z, float w);
 /*

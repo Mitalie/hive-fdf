@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/02 21:00:42 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/04 17:15:15 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	draw_with_angle(mlx_image_t *image, t_mesh *mesh,
 	transform = mul4f_mat_mat(&next, &transform);
 	// tilt vertical towards camera (view from above)
 	next = mat4f(
-			vec4f((float)image->height / image->width, 0.0f, 0.0f, 0.0f),
+			vec4f(1.0f, 0.0f, 0.0f, 0.0f),
 			vec4f(0.0f, cosf(elevation_rad), -sinf(elevation_rad), 0.0f),
 			vec4f(0.0f, sinf(elevation_rad), cosf(elevation_rad), 0.0f),
 			vec4f(0.0f, 0.0f, 0.0f, 1.0f));

@@ -6,13 +6,98 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/02 20:59:09 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/04 17:04:02 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "line.h"
 #include <math.h>
 #include <stdint.h>
+
+/*
+	A plane can be described by a point p0 on the plane, and a normal vector n
+	with n != 0. Distance d of point p from such a plane is
+	d = (p - p0) dot n / |n|. Points where d = 0 lie on the plane, d > 0 are on
+	the side the normal vector points to, and d < 0 are on the opposite side.
+
+	A line through points a and b with a != b is all points p = a + t(b - a)
+	where t is a scalar. If a and b are endpoints of the line, then 0 <= t <= 1.
+
+	Distance of such points from a plane d(t) = (a + t(b - a) - p0) dot n / |n|.
+
+	An intersection of the line and the plane is described by d(t) = 0. Solving
+	for t, we get t = (p0 - a) dot n / (b - a) dot n.
+
+	Our clip planes all pass through origin, so the p0 term disappears. We also
+	only check side of the plane, not actual distance, so the division by |n|
+	can be omitted as it is always nonnegative and doesn't change the sign. The
+	equations can be simplified:
+	d = p dot n
+	t = -(a dot n)/(b dot n - a dot n)
+
+	We calculate each plane clipping with original endpoints rather than using t
+	bounds from previous planes. This seems like it could miss early rejection
+	opportunities when both adjusted endpoints are on the wrong side of the
+	current plane, but those cases can be detected as invalid t ranges.
+*/
+
+// All planes through origin, so we only need plane normals
+static const t_vec4f	g_clip_plane_normals[] = {
+	(t_vec4f){{0, 0, 0, 1}},	// Behind (perspective):     w >= 0
+	(t_vec4f){{-1, 0, 0, 1}},	// Right:   x <=  w      w - x >= 0
+	(t_vec4f){{1, 0, 0, 1}},	// Left:    x >= -w      w + x >= 0
+	(t_vec4f){{0, 1, 0, 1}},	// Top:     y <=  w      w - y >= 0
+	(t_vec4f){{0, -1, 0, 1}},	// Bottom:  y >= -w      w + y >= 0
+};
+
+static bool	clip(t_vec4f a, t_vec4f b, float *min_t, float *max_t)
+{
+	size_t	i;
+	float	dot_an;
+	float	dot_bn;
+
+	i = 0;
+	while (i < sizeof g_clip_plane_normals / sizeof(*g_clip_plane_normals)
+		&& *min_t <= *max_t)
+	{
+		dot_an = dot4f(a, g_clip_plane_normals[i]);
+		dot_bn = dot4f(b, g_clip_plane_normals[i]);
+		if (dot_an < 0 && dot_bn < 0)
+			return (false);
+		if (dot_an < 0)
+			*min_t = fmaxf(*min_t, -dot_an / (dot_bn - dot_an));
+		if (dot_bn < 0)
+			*max_t = fminf(*max_t, -dot_an / (dot_bn - dot_an));
+		i++;
+	}
+	return (*min_t <= *max_t);
+}
+
+static bool	prepare(t_line_data *l, t_vertex a, t_vertex b)
+{
+	t_vec4f	new_a;
+	t_vec4f	new_b;
+
+	l->t_a = 0;
+	l->t_b = 1;
+	if (!clip(a.pos, b.pos, &l->t_a, &l->t_b))
+		return (false);
+	new_a = add4f(mul4f_s_vec(1 - l->t_a, a.pos), mul4f_s_vec(l->t_a, b.pos));
+	new_b = add4f(mul4f_s_vec(1 - l->t_b, a.pos), mul4f_s_vec(l->t_b, b.pos));
+	l->pos_a = vec4f(
+			new_a.x / new_a.w,
+			new_a.y / new_a.w,
+			new_a.z / new_a.w,
+			1 / new_a.w);
+	l->pos_b = vec4f(
+			new_b.x / new_b.w,
+			new_b.y / new_b.w,
+			new_b.z / new_b.w,
+			1 / new_b.w);
+	l->color_a = a.color;
+	l->color_b = b.color;
+	return (true);
+}
 
 static uint32_t	color_interp(uint32_t a, uint32_t b, float t)
 {
@@ -40,73 +125,58 @@ static uint32_t	color_interp(uint32_t a, uint32_t b, float t)
 	TODO: Implement Z buffer and Z test.
 */
 
-#include <stdio.h>
-
-static void	line_horizontal(mlx_image_t *image, t_vertex a, t_vertex b)
+static void	line_horizontal(mlx_image_t *image, t_line_data *l)
 {
-	float		slope;
-	int32_t		i;
-	int32_t		iend;
-	float		iymin;
-	float		iymax;
+	float	slope;
+	float	xs;
+	float	xe;
+	float	x;
+	float	y;
 
-	slope = (b.pos.y - a.pos.y) / (b.pos.x - a.pos.x);
-	if ((slope >= 0 && a.pos.y >= image->height) || (slope <= 0 && a.pos.y < 0))
-		return ;
-	iymin = roundf(-a.pos.y / slope);
-	iymax = roundf((image->height - fabsf(slope) - a.pos.y) / slope);
-	i = fmaxf(fmaxf(0.0f, -a.pos.x), fminf(iymin, iymax));
-	iend = fminf(fminf(image->width, b.pos.x) - a.pos.x, fmaxf(iymin, iymax));
-	while (i < iend)
+	slope = (l->pos_b.y - l->pos_a.y) / (l->pos_b.x - l->pos_a.x);
+	xs = l->pos_a.x;
+	xe = l->pos_b.x;
+	x = xs;
+	while ((xs <= xe && x <= xe) || (xs > xe && x >= xe))
 	{
-		if (a.pos.z + i * (b.pos.z - a.pos.z) / (b.pos.x - a.pos.x) > 0)
-			mlx_put_pixel(image, a.pos.x + i, a.pos.y + i * slope,
-				color_interp(a.color, b.color, i / (b.pos.x - a.pos.x)));
-		i++;
+		y = l->pos_a.y + slope * (x - xs);
+		if (x >= 0 && x < image->width && y >= 0 && y < image->height)
+			mlx_put_pixel(image, x, y,
+				color_interp(l->color_a, l->color_b, (x - xs) / (xe - xs)));
+		else
+			;
+		if (xe < xs)
+			x--;
+		else
+			x++;
 	}
 }
 
-static void	line_vertical(mlx_image_t *image, t_vertex a, t_vertex b)
+static void	line_vertical(mlx_image_t *image, t_line_data *l)
 {
-	float		slope;
-	int32_t		i;
-	int32_t		iend;
-	float		ixmin;
-	float		ixmax;
+	float	slope;
+	float	ys;
+	float	ye;
+	float	y;
+	float	x;
 
-	slope = (b.pos.x - a.pos.x) / (b.pos.y - a.pos.y);
-	if ((slope >= 0 && a.pos.x >= image->width) || (slope <= 0 && a.pos.x < 0))
-		return ;
-	ixmin = roundf(-a.pos.x / slope);
-	ixmax = roundf((image->width - fabsf(slope) - a.pos.x) / slope);
-	i = fmaxf(fmaxf(0.0f, -a.pos.y), fminf(ixmin, ixmax));
-	iend = fminf(fminf(image->height, b.pos.y) - a.pos.y, fmaxf(ixmin, ixmax));
-	while (i < iend)
+	slope = (l->pos_b.x - l->pos_a.x) / (l->pos_b.y - l->pos_a.y);
+	ys = l->pos_a.y;
+	ye = l->pos_b.y;
+	y = ys;
+	while ((ys <= ye && y <= ye) || (ys > ye && y >= ye))
 	{
-		if (a.pos.z + i * (b.pos.z - a.pos.z) / (b.pos.y - a.pos.y) > 0)
-			mlx_put_pixel(image, a.pos.x + i * slope, a.pos.y + i,
-				color_interp(a.color, b.color, i / (b.pos.y - a.pos.y)));
-		i++;
+		x = l->pos_a.x + slope * (y - ys);
+		if (x >= 0 && x < image->width && y >= 0 && y < image->height)
+			mlx_put_pixel(image, x, y,
+				color_interp(l->color_a, l->color_b, (y - ys) / (ye - ys)));
+		else
+			;
+		if (ye < ys)
+			y--;
+		else
+			y++;
 	}
-}
-
-/*
-	TODO: Do clipping before divide. Without abs, negative w negates X and Y
-		which makes them totally wrong. If entire line is behind, nothing is
-		visible because of z-clipping, but if part of the line is in front it
-		is drawn from one correct point towards one wrong point.
-*/
-
-static t_vec4f	perspective_divide(t_vec4f pos)
-{
-	float	w_recip;
-
-	w_recip = 1.0f / pos.w;
-	return (vec4f(
-			pos.x * fabsf(w_recip),
-			pos.y * fabsf(w_recip),
-			pos.z * w_recip,
-			w_recip));
 }
 
 /*
@@ -116,24 +186,16 @@ static t_vec4f	perspective_divide(t_vec4f pos)
 
 void	draw_line(mlx_image_t *image, t_vertex a, t_vertex b)
 {
-	a.pos = perspective_divide(a.pos);
-	b.pos = perspective_divide(b.pos);
-	a.pos.x = floorf((a.pos.x + 1.0f) * 0.5f * image->width) + 0.5f;
-	a.pos.y = floorf((-a.pos.y + 1.0f) * 0.5f * image->height) + 0.5f;
-	b.pos.x = floorf((b.pos.x + 1.0f) * 0.5f * image->width) + 0.5f;
-	b.pos.y = floorf((-b.pos.y + 1.0f) * 0.5f * image->height) + 0.5f;
-	if (fabsf(a.pos.y - b.pos.y) <= fabsf(a.pos.x - b.pos.x))
-	{
-		if (a.pos.x <= b.pos.x)
-			line_horizontal(image, a, b);
-		else
-			line_horizontal(image, b, a);
-	}
+	t_line_data	l;
+
+	if (!prepare(&l, a, b))
+		return ;
+	l.pos_a.x = floorf((l.pos_a.x + 1.0f) * 0.5f * image->width) + 0.5f;
+	l.pos_a.y = floorf((-l.pos_a.y + 1.0f) * 0.5f * image->height) + 0.5f;
+	l.pos_b.x = floorf((l.pos_b.x + 1.0f) * 0.5f * image->width) + 0.5f;
+	l.pos_b.y = floorf((-l.pos_b.y + 1.0f) * 0.5f * image->height) + 0.5f;
+	if (fabsf(l.pos_a.y - l.pos_b.y) <= fabsf(l.pos_a.x - l.pos_b.x))
+		line_horizontal(image, &l);
 	else
-	{
-		if (a.pos.y <= b.pos.y)
-			line_vertical(image, a, b);
-		else
-			line_vertical(image, b, a);
-	}
+		line_vertical(image, &l);
 }
