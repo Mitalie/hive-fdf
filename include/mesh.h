@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:24:11 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/21 18:30:53 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/04 17:49:37 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ typedef struct s_mesh
 	uint32_t	n_lines;
 }	t_mesh;
 
-void	draw_mesh(mlx_image_t *image, t_mesh *mesh, t_mat4f *transform);
+void	draw_mesh(mlx_image_t *image, t_mesh *mesh, t_mat4 *transform);
 
 #endif
