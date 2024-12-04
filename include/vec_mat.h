@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 15:22:54 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/04 17:52:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:15:35 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ typedef union u_vec4
 	};
 }	t_vec4;
 
+t_vec4	add4(t_vec4 a, t_vec4 b);
+t_vec4	mul_sv4(float s, t_vec4 v);
+float	dot4(t_vec4 a, t_vec4 b);
+
 /*
 	Matrices are stored in column-major order to allow optimizing compiler to
 	generate more efficient SIMD instructions for matrix-vector multiplication.
@@ -47,10 +51,13 @@ typedef struct s_mat4
 	t_vec4	col[4];
 }	t_mat4;
 
-float	dot4(t_vec4 a, t_vec4 b);
 t_vec4	mul_mv4(const t_mat4 *m, t_vec4 v);
 t_mat4	mul_mm4(const t_mat4 *a, const t_mat4 *b);
 t_mat4	transpose4(const t_mat4 *m);
+
+/*
+	Helper functions to make creating matrices in code slightly more ergonomic.
+*/
 
 t_vec4	vec4(float x, float y, float z, float w);
 /*

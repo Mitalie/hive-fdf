@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/04 17:45:25 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/04 18:11:15 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,8 +41,9 @@ SRCS := $(addprefix $(SRCDIR)/,\
 	map/map_builder_add_entry.c \
 	map/map_load.c \
 	parse_int.c \
-	vec_mat.c \
-	vec_mat_helper.c \
+	vec_mat/vec.c \
+	vec_mat/mat.c \
+	vec_mat/vec_mat_helper.c \
 )
 
 OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
