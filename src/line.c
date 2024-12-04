@@ -6,32 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/02 18:06:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/04 17:45:04 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "line.h"
 #include <math.h>
 #include <stdint.h>
-
-static uint32_t	color_interp(uint32_t a, uint32_t b, float t)
-{
-	uint32_t	i;
-	uint32_t	out;
-	float		ta;
-	float		tb;
-
-	i = 0;
-	out = 0;
-	while (i < 32)
-	{
-		ta = (a >> i & 0xff) * (1 - t);
-		tb = (b >> i & 0xff) * t;
-		out |= (uint32_t)fminf(ta + tb, 0xff) << i;
-		i += 8;
-	}
-	return (out);
-}
+#include "color.h"
 
 static void	line_horizontal(mlx_image_t *image, t_vertex a, t_vertex b)
 {

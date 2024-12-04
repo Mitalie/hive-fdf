@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/02 16:23:31 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/04 17:45:25 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ clean: mlx42-clean
 # Project files and targets
 SRCS := $(addprefix $(SRCDIR)/,\
 	main.c \
+	color.c \
 	line.c \
 	mesh.c \
 	buffer.c \
