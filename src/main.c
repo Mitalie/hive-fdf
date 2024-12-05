@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/04 17:52:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/05 19:29:19 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,36 +41,39 @@ static void	clear_image(mlx_image_t *image)
 	}
 }
 
-/*
-	1. shrink model
-	2. rotate horizontal plane
-	3. tilt and scale horizontal axis to match aspect ratio
-
-	Model size and aspect ratio should really be handled by separate projection
-	matrix (to be implemented)
-*/
 static void	draw_with_angle(mlx_image_t *image, t_mesh *mesh,
 	float azimuth_rad, float elevation_rad)
 {
 	t_mat4	transform;
 	t_mat4	next;
 
+	// move camera at (10,10,10) to origin
 	transform = mat4(
-			vec4(1.0f / 20, 0.0f, 0.0f, 0.0f),
-			vec4(0.0f, 1.0f / 20, 0.0f, 0.0f),
-			vec4(0.0f, 0.0f, 1.0f / 20, 0.0f),
+			vec4(1.0f, 0.0f, 0.0f, -10.0f),
+			vec4(0.0f, 1.0f, 0.0f, -10.0f),
+			vec4(0.0f, 0.0f, 1.0f, -10.0f),
 			vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	// rotate camera in horizontal plane
 	next = mat4(
 			vec4(cosf(azimuth_rad), 0.0f, sinf(azimuth_rad), 0.0f),
 			vec4(0.0f, 1.0f, 0.0f, 0.0f),
 			vec4(-sinf(azimuth_rad), 0.0f, cosf(azimuth_rad), 0.0f),
 			vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	transform = mul_mm4(&next, &transform);
+	// rotate camera up/down
 	next = mat4(
-			vec4((float)image->height / image->width, 0.0f, 0.0f, 0.0f),
+			vec4(1.0f, 0.0f, 0.0f, 0.0f),
 			vec4(0.0f, cosf(elevation_rad), -sinf(elevation_rad), 0.0f),
 			vec4(0.0f, sinf(elevation_rad), cosf(elevation_rad), 0.0f),
 			vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	transform = mul_mm4(&next, &transform);
+	// projection: adjust for vertical and horizontal field of view,
+	// put -z into w for perspective divide, w to z to store depth as -1/z
+	next = mat4(
+			vec4(2 * (float)image->height / image->width, 0.0f, 0.0f, 0.0f),
+			vec4(0.0f, 2, 0.0f, 0.0f),
+			vec4(0.0f, 0.0f, 0.0f, 1.0f),
+			vec4(0.0f, 0.0f, -1.0f, 0.0f));
 	transform = mul_mm4(&next, &transform);
 	clear_image(image);
 	draw_mesh(image, mesh, &transform);
