@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 17:22:22 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:31:27 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 	}
 	else if (key_data.key == MLX_KEY_R && key_data.action == MLX_PRESS)
 	{
-		fdf_data->camera.azimuth_deg = -45;
-		fdf_data->camera.elevation_deg = 35.2643897f;
+		fdf_data->camera.azimuth_deg = 45;
+		fdf_data->camera.elevation_deg = -35.2643897f;
 	}
 	else if (key_data.action == MLX_PRESS || key_data.action == MLX_REPEAT)
 	{
@@ -117,8 +117,8 @@ int	main(int argc, char **argv)
 	if (!data.mlx)
 		return (1);
 	data.image = mlx_new_image(data.mlx, data.mlx->width, data.mlx->height);
-	data.camera.azimuth_deg = -45;
-	data.camera.elevation_deg = 35.2643897f;
+	data.camera.azimuth_deg = 45;
+	data.camera.elevation_deg = -35.2643897f;
 	data.camera.aspect_ratio = (float)data.mlx->width / data.mlx->height;
 	if (data.image)
 	{

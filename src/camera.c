@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:02:26 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 17:25:40 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:28:30 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ t_mat4	camera_transformation(t_camera *camera)
 			vec4(0, 1, 0, -10),
 			vec4(0, 0, 1, -10),
 			vec4(0, 0, 0, 1));
-	next = rotation_y(camera->azimuth_deg);
+	next = rotation_y(-camera->azimuth_deg);
 	transform = mul_mm4(&next, &transform);
-	next = rotation_x(camera->elevation_deg);
+	next = rotation_x(-camera->elevation_deg);
 	transform = mul_mm4(&next, &transform);
 	next = mat4(
 			vec4(2 / camera->aspect_ratio, 0, 0, 0),

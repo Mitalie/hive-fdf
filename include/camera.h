@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 14:52:49 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 17:15:02 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:42:49 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include "vec_mat.h"
 
+/*
+	Azimuth and elevation are anticlockwise rotations of the camera. When
+	transforming world into view space, the rotations need to be reversed.
+*/
 typedef struct s_camera
 {
 	float	azimuth_deg;
