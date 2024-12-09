@@ -6,13 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/05 19:29:19 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:51:50 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <stdlib.h>
 #include "MLX42/MLX42.h"
+#include "rotation.h"
 #include "line.h"
 #include "mesh.h"
 #include "map.h"
@@ -42,7 +43,7 @@ static void	clear_image(mlx_image_t *image)
 }
 
 static void	draw_with_angle(mlx_image_t *image, t_mesh *mesh,
-	float azimuth_rad, float elevation_rad)
+	float azimuth_deg, float elevation_deg)
 {
 	t_mat4	transform;
 	t_mat4	next;
@@ -54,18 +55,10 @@ static void	draw_with_angle(mlx_image_t *image, t_mesh *mesh,
 			vec4(0.0f, 0.0f, 1.0f, -10.0f),
 			vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	// rotate camera in horizontal plane
-	next = mat4(
-			vec4(cosf(azimuth_rad), 0.0f, sinf(azimuth_rad), 0.0f),
-			vec4(0.0f, 1.0f, 0.0f, 0.0f),
-			vec4(-sinf(azimuth_rad), 0.0f, cosf(azimuth_rad), 0.0f),
-			vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	next = rotation_y(azimuth_deg);
 	transform = mul_mm4(&next, &transform);
 	// rotate camera up/down
-	next = mat4(
-			vec4(1.0f, 0.0f, 0.0f, 0.0f),
-			vec4(0.0f, cosf(elevation_rad), -sinf(elevation_rad), 0.0f),
-			vec4(0.0f, sinf(elevation_rad), cosf(elevation_rad), 0.0f),
-			vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	next = rotation_x(elevation_deg);
 	transform = mul_mm4(&next, &transform);
 	// projection: adjust for vertical and horizontal field of view,
 	// put -z into w for perspective divide, w to z to store depth as -1/z
@@ -130,8 +123,7 @@ static void	loop_hook(void *param)
 	}
 	if (fdf_data->need_redraw)
 		draw_with_angle(fdf_data->image, &fdf_data->mesh,
-			fdf_data->azimuth_deg / 180 * 3.1415926535,
-			fdf_data->elevation_deg / 180 * 3.1415926535);
+			fdf_data->azimuth_deg, fdf_data->elevation_deg);
 	fdf_data->need_redraw = false;
 }
 
