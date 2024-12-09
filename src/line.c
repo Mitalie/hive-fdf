@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 20:33:31 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 20:50:39 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,55 +102,22 @@ static bool	prepare(t_vertex *a, t_vertex *b)
 
 /*
 	TODO: Perspective correct colour interpolation.
-	TODO: Implement Z buffer and Z test.
 */
 
-static void	line_horizontal(t_z_image *image, t_vertex a, t_vertex b)
+static void	line_loop(t_z_image *image, t_vertex a, t_vertex b)
 {
-	float		slope;
+	t_vec4		delta;
+	float		len;
 	int32_t		i;
-	int32_t		iend;
-	float		x;
-	float		y;
-	float		zslope;
-	float		z;
+	t_vec4		pos;
 
-	slope = (b.pos.y - a.pos.y) / (b.pos.x - a.pos.x);
-	zslope = (b.pos.z - a.pos.z) / (b.pos.x - a.pos.x);
+	delta = sub4(b.pos, a.pos);
+	len = fmaxf(fabsf(delta.x), fabsf(delta.y));
 	i = 0;
-	iend = b.pos.x - a.pos.x;
-	while (i < iend)
+	while (i < len)
 	{
-		x = a.pos.x + i;
-		y = a.pos.y + i * slope;
-		z = a.pos.z + i * zslope;
-		z_image_write(image, vec4(x, y, z, 1),
-			color_interp(a.color, b.color, i / (b.pos.x - a.pos.x)));
-		i++;
-	}
-}
-
-static void	line_vertical(t_z_image *image, t_vertex a, t_vertex b)
-{
-	float		slope;
-	int32_t		i;
-	int32_t		iend;
-	float		y;
-	float		x;
-	float		zslope;
-	float		z;
-
-	slope = (b.pos.x - a.pos.x) / (b.pos.y - a.pos.y);
-	zslope = (b.pos.z - a.pos.z) / (b.pos.y - a.pos.y);
-	i = 0;
-	iend = b.pos.y - a.pos.y;
-	while (i < iend)
-	{
-		x = a.pos.x + i * slope;
-		y = a.pos.y + i;
-		z = a.pos.z + i * zslope;
-		z_image_write(image, vec4(x, y, z, 1),
-			color_interp(a.color, b.color, i / (b.pos.y - a.pos.y)));
+		pos = add4(a.pos, mul_sv4(i / len, delta));
+		z_image_write(image, pos, color_interp(a.color, b.color, i / len));
 		i++;
 	}
 }
@@ -168,18 +135,5 @@ void	draw_line(t_z_image *image, t_vertex a, t_vertex b)
 	a.pos.y = floorf((-a.pos.y + 1.0f) * 0.5f * image->mlx_img->height) + 0.5f;
 	b.pos.x = floorf((b.pos.x + 1.0f) * 0.5f * image->mlx_img->width) + 0.5f;
 	b.pos.y = floorf((-b.pos.y + 1.0f) * 0.5f * image->mlx_img->height) + 0.5f;
-	if (fabsf(a.pos.y - b.pos.y) <= fabsf(a.pos.x - b.pos.x))
-	{
-		if (a.pos.x <= b.pos.x)
-			line_horizontal(image, a, b);
-		else
-			line_horizontal(image, b, a);
-	}
-	else
-	{
-		if (a.pos.y <= b.pos.y)
-			line_vertical(image, a, b);
-		else
-			line_vertical(image, b, a);
-	}
+	line_loop(image, a, b);
 }
