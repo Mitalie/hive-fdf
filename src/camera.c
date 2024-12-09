@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:02:26 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 17:28:30 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:53:03 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,28 @@
 #include <math.h>
 #include "rotation.h"
 
+void	camera_reset(t_camera *camera)
+{
+	camera->position = vec4(10, 10, 10, 1);
+	camera->azimuth_deg = 45;
+	camera->elevation_deg = -35.2643897f;
+}
+
+void	camera_move(t_camera *camera, float right, float up, float back)
+{
+	t_mat4	transform;
+	t_mat4	next;
+	t_vec4	movement;
+
+	transform = rotation_x(camera->elevation_deg);
+	next = rotation_y(camera->azimuth_deg);
+	transform = mul_mm4(&next, &transform);
+	movement = mul_mv4(&transform, vec4(right, up, back, 0));
+	camera->position = add4(camera->position, movement);
+}
+
 /*
-	- translate camera position (10,10,10) to origin
+	- translate camera position to origin
 	- rotate scene around camera y axis
 	- rotate scene around camera x axis
 	- perspective projection: scale view x and y bounds to [-1,1],
@@ -27,9 +47,9 @@ t_mat4	camera_transformation(t_camera *camera)
 	t_mat4	next;
 
 	transform = mat4(
-			vec4(1, 0, 0, -10),
-			vec4(0, 1, 0, -10),
-			vec4(0, 0, 1, -10),
+			vec4(1, 0, 0, -camera->position.x),
+			vec4(0, 1, 0, -camera->position.y),
+			vec4(0, 0, 1, -camera->position.z),
 			vec4(0, 0, 0, 1));
 	next = rotation_y(-camera->azimuth_deg);
 	transform = mul_mm4(&next, &transform);

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 14:52:49 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 17:42:49 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:48:33 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,14 @@
 */
 typedef struct s_camera
 {
+	t_vec4	position;
 	float	azimuth_deg;
 	float	elevation_deg;
 	float	aspect_ratio;
 }	t_camera;
 
+void	camera_reset(t_camera *camera);
+void	camera_move(t_camera *camera, float right, float up, float back);
 t_mat4	camera_transformation(t_camera *camera);
 
 #endif

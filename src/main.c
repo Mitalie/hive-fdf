@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 17:31:27 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:54:43 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,7 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 		return ;
 	}
 	else if (key_data.key == MLX_KEY_R && key_data.action == MLX_PRESS)
-	{
-		fdf_data->camera.azimuth_deg = 45;
-		fdf_data->camera.elevation_deg = -35.2643897f;
-	}
+		camera_reset(&fdf_data->camera);
 	else if (key_data.action == MLX_PRESS || key_data.action == MLX_REPEAT)
 	{
 		if (key_data.key == MLX_KEY_LEFT)
@@ -75,6 +72,18 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 			fdf_data->camera.elevation_deg += 2;
 		else if (key_data.key == MLX_KEY_DOWN)
 			fdf_data->camera.elevation_deg -= 2;
+		else if (key_data.key == MLX_KEY_W)
+			camera_move(&fdf_data->camera, 0, 0, -1);
+		else if (key_data.key == MLX_KEY_S)
+			camera_move(&fdf_data->camera, 0, 0, 1);
+		else if (key_data.key == MLX_KEY_A)
+			camera_move(&fdf_data->camera, -1, 0, 0);
+		else if (key_data.key == MLX_KEY_D)
+			camera_move(&fdf_data->camera, 1, 0, 0);
+		else if (key_data.key == MLX_KEY_Q)
+			camera_move(&fdf_data->camera, 0, 1, 0);
+		else if (key_data.key == MLX_KEY_Z)
+			camera_move(&fdf_data->camera, 0, -1, 0);
 	}
 	fdf_data->need_redraw = true;
 }
@@ -117,8 +126,7 @@ int	main(int argc, char **argv)
 	if (!data.mlx)
 		return (1);
 	data.image = mlx_new_image(data.mlx, data.mlx->width, data.mlx->height);
-	data.camera.azimuth_deg = 45;
-	data.camera.elevation_deg = -35.2643897f;
+	camera_reset(&data.camera);
 	data.camera.aspect_ratio = (float)data.mlx->width / data.mlx->height;
 	if (data.image)
 	{
