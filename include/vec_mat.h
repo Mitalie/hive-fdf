@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 15:22:54 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/04 18:15:35 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 20:35:10 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef union u_vec4
 }	t_vec4;
 
 t_vec4	add4(t_vec4 a, t_vec4 b);
+t_vec4	sub4(t_vec4 a, t_vec4 b);
 t_vec4	mul_sv4(float s, t_vec4 v);
 float	dot4(t_vec4 a, t_vec4 b);
 
