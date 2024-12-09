@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 17:54:43 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:07:25 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,10 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 			camera_move(&fdf_data->camera, 0, 1, 0);
 		else if (key_data.key == MLX_KEY_Z)
 			camera_move(&fdf_data->camera, 0, -1, 0);
+		else if (key_data.key == MLX_KEY_P)
+			fdf_data->camera.perspective = !fdf_data->camera.perspective;
+		else if (key_data.key == MLX_KEY_M)
+			fdf_data->camera.move_angled = !fdf_data->camera.move_angled;
 	}
 	fdf_data->need_redraw = true;
 }

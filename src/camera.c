@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:02:26 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 17:53:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:09:17 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	camera_reset(t_camera *camera)
 	camera->position = vec4(10, 10, 10, 1);
 	camera->azimuth_deg = 45;
 	camera->elevation_deg = -35.2643897f;
+	camera->perspective = false;
+	camera->move_angled = false;
 }
 
 void	camera_move(t_camera *camera, float right, float up, float back)
@@ -27,11 +29,40 @@ void	camera_move(t_camera *camera, float right, float up, float back)
 	t_mat4	next;
 	t_vec4	movement;
 
-	transform = rotation_x(camera->elevation_deg);
-	next = rotation_y(camera->azimuth_deg);
-	transform = mul_mm4(&next, &transform);
+	if (camera->perspective && camera->move_angled)
+	{
+		transform = rotation_x(camera->elevation_deg);
+		next = rotation_y(camera->azimuth_deg);
+		transform = mul_mm4(&next, &transform);
+	}
+	else
+		transform = rotation_y(camera->azimuth_deg);
 	movement = mul_mv4(&transform, vec4(right, up, back, 0));
 	camera->position = add4(camera->position, movement);
+}
+
+static t_mat4	camera_projection_perspective(t_camera *camera)
+{
+	t_mat4	transform;
+
+	transform = mat4(
+			vec4(2 / camera->aspect_ratio, 0, 0, 0),
+			vec4(0, 2, 0, 0),
+			vec4(0, 0, 0, 1),
+			vec4(0, 0, -1, 0));
+	return (transform);
+}
+
+static t_mat4	camera_projection_orthograpic(t_camera *camera)
+{
+	t_mat4	transform;
+
+	transform = mat4(
+			vec4(0.1f / camera->aspect_ratio, 0, 0, 0),
+			vec4(0, 0.1f, 0, 0),
+			vec4(0, 0, 1, 0),
+			vec4(0, 0, 0, 1));
+	return (transform);
 }
 
 /*
@@ -55,11 +86,10 @@ t_mat4	camera_transformation(t_camera *camera)
 	transform = mul_mm4(&next, &transform);
 	next = rotation_x(-camera->elevation_deg);
 	transform = mul_mm4(&next, &transform);
-	next = mat4(
-			vec4(2 / camera->aspect_ratio, 0, 0, 0),
-			vec4(0, 2, 0, 0),
-			vec4(0, 0, 0, 1),
-			vec4(0, 0, -1, 0));
+	if (camera->perspective)
+		next = camera_projection_perspective(camera);
+	else
+		next = camera_projection_orthograpic(camera);
 	transform = mul_mm4(&next, &transform);
 	return (transform);
 }
