@@ -6,14 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 16:51:50 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 17:22:22 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <stdlib.h>
 #include "MLX42/MLX42.h"
-#include "rotation.h"
+#include "camera.h"
 #include "line.h"
 #include "mesh.h"
 #include "map.h"
@@ -22,8 +22,7 @@ typedef struct s_data {
 	mlx_t		*mlx;
 	mlx_image_t	*image;
 	t_mesh		mesh;
-	float		azimuth_deg;
-	float		elevation_deg;
+	t_camera	camera;
 	bool		need_redraw;
 }	t_data;
 
@@ -42,32 +41,11 @@ static void	clear_image(mlx_image_t *image)
 	}
 }
 
-static void	draw_with_angle(mlx_image_t *image, t_mesh *mesh,
-	float azimuth_deg, float elevation_deg)
+static void	draw_with_camera(mlx_image_t *image, t_mesh *mesh, t_camera *camera)
 {
 	t_mat4	transform;
-	t_mat4	next;
 
-	// move camera at (10,10,10) to origin
-	transform = mat4(
-			vec4(1.0f, 0.0f, 0.0f, -10.0f),
-			vec4(0.0f, 1.0f, 0.0f, -10.0f),
-			vec4(0.0f, 0.0f, 1.0f, -10.0f),
-			vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	// rotate camera in horizontal plane
-	next = rotation_y(azimuth_deg);
-	transform = mul_mm4(&next, &transform);
-	// rotate camera up/down
-	next = rotation_x(elevation_deg);
-	transform = mul_mm4(&next, &transform);
-	// projection: adjust for vertical and horizontal field of view,
-	// put -z into w for perspective divide, w to z to store depth as -1/z
-	next = mat4(
-			vec4(2 * (float)image->height / image->width, 0.0f, 0.0f, 0.0f),
-			vec4(0.0f, 2, 0.0f, 0.0f),
-			vec4(0.0f, 0.0f, 0.0f, 1.0f),
-			vec4(0.0f, 0.0f, -1.0f, 0.0f));
-	transform = mul_mm4(&next, &transform);
+	transform = camera_transformation(camera);
 	clear_image(image);
 	draw_mesh(image, mesh, &transform);
 }
@@ -84,19 +62,19 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 	}
 	else if (key_data.key == MLX_KEY_R && key_data.action == MLX_PRESS)
 	{
-		fdf_data->azimuth_deg = -45;
-		fdf_data->elevation_deg = 35.2643897f;
+		fdf_data->camera.azimuth_deg = -45;
+		fdf_data->camera.elevation_deg = 35.2643897f;
 	}
 	else if (key_data.action == MLX_PRESS || key_data.action == MLX_REPEAT)
 	{
 		if (key_data.key == MLX_KEY_LEFT)
-			fdf_data->azimuth_deg += 5;
+			fdf_data->camera.azimuth_deg += 5;
 		else if (key_data.key == MLX_KEY_RIGHT)
-			fdf_data->azimuth_deg -= 5;
+			fdf_data->camera.azimuth_deg -= 5;
 		else if (key_data.key == MLX_KEY_UP)
-			fdf_data->elevation_deg += 2;
+			fdf_data->camera.elevation_deg += 2;
 		else if (key_data.key == MLX_KEY_DOWN)
-			fdf_data->elevation_deg -= 2;
+			fdf_data->camera.elevation_deg -= 2;
 	}
 	fdf_data->need_redraw = true;
 }
@@ -113,6 +91,7 @@ static void	loop_hook(void *param)
 	{
 		mlx_delete_image(mlx, fdf_data->image);
 		fdf_data->image = mlx_new_image(mlx, mlx->width, mlx->height);
+		fdf_data->camera.aspect_ratio = (float)mlx->width / mlx->height;
 		if (!fdf_data->image)
 		{
 			mlx_close_window(mlx);
@@ -122,8 +101,7 @@ static void	loop_hook(void *param)
 		fdf_data->need_redraw = true;
 	}
 	if (fdf_data->need_redraw)
-		draw_with_angle(fdf_data->image, &fdf_data->mesh,
-			fdf_data->azimuth_deg, fdf_data->elevation_deg);
+		draw_with_camera(fdf_data->image, &fdf_data->mesh, &fdf_data->camera);
 	fdf_data->need_redraw = false;
 }
 
@@ -139,8 +117,9 @@ int	main(int argc, char **argv)
 	if (!data.mlx)
 		return (1);
 	data.image = mlx_new_image(data.mlx, data.mlx->width, data.mlx->height);
-	data.azimuth_deg = -45;
-	data.elevation_deg = 35.2643897f;
+	data.camera.azimuth_deg = -45;
+	data.camera.elevation_deg = 35.2643897f;
+	data.camera.aspect_ratio = (float)data.mlx->width / data.mlx->height;
 	if (data.image)
 	{
 		mlx_key_hook(data.mlx, key_hook, &data);
