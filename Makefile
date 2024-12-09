@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/09 16:54:41 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/09 20:33:23 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ SRCS := $(addprefix $(SRCDIR)/,\
 	vec_mat/vec_mat_helper.c \
 	rotation.c \
 	camera.c \
+	z_image.c \
 )
 
 OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

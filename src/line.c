@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/05 19:24:42 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 20:33:31 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,46 +105,52 @@ static bool	prepare(t_vertex *a, t_vertex *b)
 	TODO: Implement Z buffer and Z test.
 */
 
-static void	line_horizontal(mlx_image_t *image, t_vertex a, t_vertex b)
+static void	line_horizontal(t_z_image *image, t_vertex a, t_vertex b)
 {
 	float		slope;
 	int32_t		i;
 	int32_t		iend;
 	float		x;
 	float		y;
+	float		zslope;
+	float		z;
 
 	slope = (b.pos.y - a.pos.y) / (b.pos.x - a.pos.x);
+	zslope = (b.pos.z - a.pos.z) / (b.pos.x - a.pos.x);
 	i = 0;
 	iend = b.pos.x - a.pos.x;
 	while (i < iend)
 	{
 		x = a.pos.x + i;
 		y = a.pos.y + i * slope;
-		if (x >= 0 && x < image->width && y >= 0 && y < image->height)
-			mlx_put_pixel(image, x, y,
-				color_interp(a.color, b.color, i / (b.pos.x - a.pos.x)));
+		z = a.pos.z + i * zslope;
+		z_image_write(image, vec4(x, y, z, 1),
+			color_interp(a.color, b.color, i / (b.pos.x - a.pos.x)));
 		i++;
 	}
 }
 
-static void	line_vertical(mlx_image_t *image, t_vertex a, t_vertex b)
+static void	line_vertical(t_z_image *image, t_vertex a, t_vertex b)
 {
 	float		slope;
 	int32_t		i;
 	int32_t		iend;
 	float		y;
 	float		x;
+	float		zslope;
+	float		z;
 
 	slope = (b.pos.x - a.pos.x) / (b.pos.y - a.pos.y);
+	zslope = (b.pos.z - a.pos.z) / (b.pos.y - a.pos.y);
 	i = 0;
 	iend = b.pos.y - a.pos.y;
 	while (i < iend)
 	{
 		x = a.pos.x + i * slope;
 		y = a.pos.y + i;
-		if (x >= 0 && x < image->width && y >= 0 && y < image->height)
-			mlx_put_pixel(image, x, y,
-				color_interp(a.color, b.color, i / (b.pos.y - a.pos.y)));
+		z = a.pos.z + i * zslope;
+		z_image_write(image, vec4(x, y, z, 1),
+			color_interp(a.color, b.color, i / (b.pos.y - a.pos.y)));
 		i++;
 	}
 }
@@ -154,14 +160,14 @@ static void	line_vertical(mlx_image_t *image, t_vertex a, t_vertex b)
 	uses +X = right, +Y = down so invert Y here.
 */
 
-void	draw_line(mlx_image_t *image, t_vertex a, t_vertex b)
+void	draw_line(t_z_image *image, t_vertex a, t_vertex b)
 {
 	if (!prepare(&a, &b))
 		return ;
-	a.pos.x = floorf((a.pos.x + 1.0f) * 0.5f * image->width) + 0.5f;
-	a.pos.y = floorf((-a.pos.y + 1.0f) * 0.5f * image->height) + 0.5f;
-	b.pos.x = floorf((b.pos.x + 1.0f) * 0.5f * image->width) + 0.5f;
-	b.pos.y = floorf((-b.pos.y + 1.0f) * 0.5f * image->height) + 0.5f;
+	a.pos.x = floorf((a.pos.x + 1.0f) * 0.5f * image->mlx_img->width) + 0.5f;
+	a.pos.y = floorf((-a.pos.y + 1.0f) * 0.5f * image->mlx_img->height) + 0.5f;
+	b.pos.x = floorf((b.pos.x + 1.0f) * 0.5f * image->mlx_img->width) + 0.5f;
+	b.pos.y = floorf((-b.pos.y + 1.0f) * 0.5f * image->mlx_img->height) + 0.5f;
 	if (fabsf(a.pos.y - b.pos.y) <= fabsf(a.pos.x - b.pos.x))
 	{
 		if (a.pos.x <= b.pos.x)

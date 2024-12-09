@@ -6,14 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:29:17 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/04 17:51:57 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/09 20:33:31 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mesh.h"
 #include "line.h"
 
-void	draw_mesh(mlx_image_t *image, t_mesh *mesh, t_mat4 *transform)
+void	draw_mesh(t_z_image *image, t_mesh *mesh, t_mat4 *transform)
 {
 	uint32_t	i;
 	t_line		line;
