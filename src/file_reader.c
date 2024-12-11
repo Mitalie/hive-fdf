@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:45:51 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/27 14:11:21 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:03:41 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ bool	file_reader_fill_buffer(t_file_reader *reader, size_t min_length)
 		if (ret == 0)
 			reader->eof = true;
 		reader->end += ret;
+		len += ret;
 	}
 	return (true);
 }
