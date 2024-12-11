@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 19:28:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 20:32:14 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:23:41 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,15 @@ void	z_image_write(t_z_image *image, t_vec4 pos, uint32_t color)
 
 	width = image->mlx_img->width;
 	height = image->mlx_img->height;
+	if (pos.x < 0 || pos.y < 0)
+		return ;
 	x = pos.x;
 	y = pos.y;
-	if (x >= 0 && x < width && y >= 0 && y < height)
-	{
-		depth_pos = &image->z_buffer[y * width + x];
-		if (*depth_pos < pos.z)
-		{
-			*depth_pos = pos.z;
-			mlx_put_pixel(image->mlx_img, x, y, color);
-		}
-	}
+	if (x >= width || y >= height)
+		return ;
+	depth_pos = &image->z_buffer[y * width + x];
+	if (pos.z < *depth_pos)
+		return ;
+	*depth_pos = pos.z;
+	mlx_put_pixel(image->mlx_img, x, y, color);
 }
