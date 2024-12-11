@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 20:33:32 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:10:15 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int	main(int argc, char **argv)
 		mlx_image_to_window(data.mlx, data.image->mlx_img, 0, 0);
 	}
 	mlx_loop(data.mlx);
+	z_image_delete(data.mlx, data.image);
 	mlx_terminate(data.mlx);
 	free(data.mesh.lines);
 	free(data.mesh.vertices);
