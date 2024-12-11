@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:59:07 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 20:35:28 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:57:57 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ t_vec4	mul_sv4(float s, t_vec4 v)
 		.v[2] = s * v.v[2],
 		.v[3] = s * v.v[3],
 	});
+}
+
+t_vec4	lerp4(t_vec4 a, t_vec4 b, float t)
+{
+	a = mul_sv4(1 - t, a);
+	b = mul_sv4(t, b);
+	return (add4(a, b));
 }
 
 /*
