@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/11 15:45:29 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:42:37 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 #include "color.h"
 
 /*
+	The part of the world that is visible on the screen is the clip volume,
+	defined by several planes. Each plane divides space in two halves, one of
+	which is outside the view. There is no need to draw anything that is not
+	visible, so determine which part (if any) of each line is visible.
+
 	A plane can be described by a point p0 on the plane, and a normal vector n
 	with n != 0. Distance d of point p from such a plane is
 	d = (p - p0) dot n / |n|. Points where d = 0 lie on the plane, d > 0 are on
@@ -30,18 +35,18 @@
 	An intersection of the line and the plane is described by d(t) = 0. Solving
 	for t, we get t = (p0 - a) dot n / (b - a) dot n.
 
+	For each clip plane we check on which side of the plane the line endpoints
+	are, and adjust the t value bounds to select the part of the line on the
+	correct side of all planes. If both endpoints are on the wrong side or if
+	the t range becomes invalid (start > end), we know the entire line is
+	outside the clip volume and skip further processing.
+
 	Our clip planes all pass through origin, so the p0 term disappears. We also
 	only check side of the plane, not actual distance, so the division by |n|
-	can be omitted as it is always nonnegative and doesn't change the sign. The
+	can be omitted as it is always positive and doesn't change the sign. The
 	equations can be simplified:
 	d = p dot n
 	t = -(a dot n)/(b dot n - a dot n)
-
-	For each clip plane we check on which side of the plane the line endpoints
-	are, and adjust the t value bounds to keep the line on the correct side of
-	all planes. If both endpoints are on the wrong side or if the t range
-	becomes invalid (start > end), we know the entire line is outside the clip
-	volume and skip further processing.
 */
 
 static const t_vec4	g_clip_plane_normals[] = {
@@ -77,6 +82,12 @@ static bool	line_calculate_clip(t_line_data *line)
 	return (line->ta <= line->tb);
 }
 
+/*
+	Calculate the new endpoints based on the clipped t values, then project the
+	coordinates from view space into screen space by dividing by w. The inverse
+	w values are stored and the t values are also divided to allow view space
+	interpolation of t in drawing loop.
+*/
 static void	line_normalize(t_line_data *line)
 {
 	t_vec4	clipped_a;
@@ -98,6 +109,8 @@ static void	line_normalize(t_line_data *line)
 			clipped_b.y / wb,
 			clipped_b.z / wb,
 			1 / wb);
+	line->ta /= wa;
+	line->tb /= wb;
 }
 
 /*
@@ -115,15 +128,18 @@ static void	line_to_pixel_coords(
 }
 
 /*
-	TODO: Perspective correct colour interpolation.
+	Position on screen is interpolated directly with i / len. The t value along
+	the line is interpolated in view space by interpolating	t/w (stored in ta/tb)
+	and 1/w (stored in a/b.pos.w) and calculating t = t/w*w = (t/w)/(1/w). This
+	makes the segments closer to camera appear longer in perspective projection.
 */
-
 static void	line_draw_loop(t_z_image *image, t_line_data *line)
 {
 	t_vec4		delta;
 	float		len;
-	int32_t		i;
+	uint32_t	i;
 	t_vec4		pos;
+	float		t;
 
 	delta = sub4(line->b.pos, line->a.pos);
 	len = fmaxf(fabsf(delta.x), fabsf(delta.y));
@@ -131,8 +147,9 @@ static void	line_draw_loop(t_z_image *image, t_line_data *line)
 	while (i < len)
 	{
 		pos = lerp4(line->a.pos, line->b.pos, i / len);
+		t = ((1 - i / len) * line->ta + i / len * line->tb) / pos.w;
 		z_image_write(image, pos,
-			color_interp(line->a.color, line->b.color, i / len));
+			color_interp(line->a.color, line->b.color, t));
 		i++;
 	}
 }
