@@ -6,11 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:48:24 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/12 20:13:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/12 20:34:18 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "camera.h"
+#include <math.h>
 #include "rotation.h"
 
 void	camera_reset(t_camera *camera)
@@ -42,4 +43,12 @@ void	camera_move(t_camera *camera, t_camera_dir dir, float amount)
 	}
 	movement = mul_mv4(&transform, movement);
 	camera->position = add4(camera->position, movement);
+}
+
+void	camera_rotate(t_camera *camera, t_camera_dir dir, float amount)
+{
+	camera->elevation_deg += amount * ((dir == CAM_UP) - (dir == CAM_DOWN));
+	camera->azimuth_deg -= amount * ((dir == CAM_RIGHT) - (dir == CAM_LEFT));
+	camera->elevation_deg = fmaxf(-90, fminf(90, camera->elevation_deg));
+	camera->azimuth_deg = fmodf(camera->azimuth_deg, 360);
 }

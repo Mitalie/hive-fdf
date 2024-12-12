@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 14:52:49 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/12 20:12:51 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/12 20:18:35 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef enum e_camera_dir
 
 void	camera_reset(t_camera *camera);
 void	camera_move(t_camera *camera, t_camera_dir dir, float amount);
+void	camera_rotate(t_camera *camera, t_camera_dir dir, float amount);
 t_mat4	camera_transformation(t_camera *camera);
 
 #endif
