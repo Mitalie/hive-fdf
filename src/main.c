@@ -6,10 +6,11 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/12 20:29:46 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/12 21:18:00 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fdf.h"
 #include <math.h>
 #include <stdlib.h>
 #include "MLX42/MLX42.h"
@@ -18,14 +19,6 @@
 #include "line.h"
 #include "mesh.h"
 #include "map.h"
-
-typedef struct s_data {
-	mlx_t		*mlx;
-	t_z_image	*image;
-	t_mesh		mesh;
-	t_camera	camera;
-	bool		need_redraw;
-}	t_data;
 
 static void	draw_with_camera(t_z_image *image, t_mesh *mesh, t_camera *camera)
 {
@@ -41,100 +34,100 @@ static void	draw_with_camera(t_z_image *image, t_mesh *mesh, t_camera *camera)
 
 static void	key_hook(mlx_key_data_t key_data, void *param)
 {
-	t_data	*fdf_data;
+	t_fdf	*fdf;
 
-	fdf_data = param;
+	fdf = param;
 	if (key_data.key == MLX_KEY_ESCAPE && key_data.action == MLX_PRESS)
 	{
-		mlx_close_window(fdf_data->mlx);
+		mlx_close_window(fdf->mlx);
 		return ;
 	}
 	else if (key_data.key == MLX_KEY_R && key_data.action == MLX_PRESS)
-		camera_reset(&fdf_data->camera);
+		camera_reset(&fdf->camera);
 	else if (key_data.action == MLX_PRESS || key_data.action == MLX_REPEAT)
 	{
 		if (key_data.key == MLX_KEY_LEFT)
-			camera_rotate(&fdf_data->camera, CAM_LEFT, 5);
+			camera_rotate(&fdf->camera, CAM_LEFT, 5);
 		else if (key_data.key == MLX_KEY_RIGHT)
-			camera_rotate(&fdf_data->camera, CAM_RIGHT, 5);
+			camera_rotate(&fdf->camera, CAM_RIGHT, 5);
 		else if (key_data.key == MLX_KEY_UP)
-			camera_rotate(&fdf_data->camera, CAM_UP, 5);
+			camera_rotate(&fdf->camera, CAM_UP, 5);
 		else if (key_data.key == MLX_KEY_DOWN)
-			camera_rotate(&fdf_data->camera, CAM_DOWN, 5);
+			camera_rotate(&fdf->camera, CAM_DOWN, 5);
 		else if (key_data.key == MLX_KEY_W)
-			camera_move(&fdf_data->camera, CAM_FRONT, 1);
+			camera_move(&fdf->camera, CAM_FRONT, 1);
 		else if (key_data.key == MLX_KEY_S)
-			camera_move(&fdf_data->camera, CAM_BACK, 1);
+			camera_move(&fdf->camera, CAM_BACK, 1);
 		else if (key_data.key == MLX_KEY_A)
-			camera_move(&fdf_data->camera, CAM_LEFT, 1);
+			camera_move(&fdf->camera, CAM_LEFT, 1);
 		else if (key_data.key == MLX_KEY_D)
-			camera_move(&fdf_data->camera, CAM_RIGHT, 1);
+			camera_move(&fdf->camera, CAM_RIGHT, 1);
 		else if (key_data.key == MLX_KEY_Q)
-			camera_move(&fdf_data->camera, CAM_UP, 1);
+			camera_move(&fdf->camera, CAM_UP, 1);
 		else if (key_data.key == MLX_KEY_Z)
-			camera_move(&fdf_data->camera, CAM_DOWN, 1);
+			camera_move(&fdf->camera, CAM_DOWN, 1);
 		else if (key_data.key == MLX_KEY_P)
-			fdf_data->camera.perspective = !fdf_data->camera.perspective;
+			fdf->camera.perspective = !fdf->camera.perspective;
 		else if (key_data.key == MLX_KEY_M)
-			fdf_data->camera.move_angled = !fdf_data->camera.move_angled;
+			fdf->camera.move_angled = !fdf->camera.move_angled;
 		else if (key_data.key == MLX_KEY_KP_ADD)
-			fdf_data->camera.zoom_exp += 0.5f;
+			fdf->camera.zoom_exp += 0.5f;
 		else if (key_data.key == MLX_KEY_KP_SUBTRACT)
-			fdf_data->camera.zoom_exp -= 0.5f;
+			fdf->camera.zoom_exp -= 0.5f;
 	}
-	fdf_data->need_redraw = true;
+	fdf->need_redraw = true;
 }
 
 static void	loop_hook(void *param)
 {
-	t_data	*fdf_data;
+	t_fdf	*fdf;
 	mlx_t	*mlx;
 
-	fdf_data = param;
-	mlx = fdf_data->mlx;
-	if (fdf_data->image->mlx_img->width != (uint32_t)mlx->width
-		|| fdf_data->image->mlx_img->height != (uint32_t)mlx->height)
+	fdf = param;
+	mlx = fdf->mlx;
+	if (fdf->image->mlx_img->width != (uint32_t)mlx->width
+		|| fdf->image->mlx_img->height != (uint32_t)mlx->height)
 	{
-		z_image_delete(mlx, fdf_data->image);
-		fdf_data->image = z_image_new(mlx, mlx->width, mlx->height);
-		fdf_data->camera.aspect_ratio = (float)mlx->width / mlx->height;
-		if (!fdf_data->image)
+		z_image_delete(mlx, fdf->image);
+		fdf->image = z_image_new(mlx, mlx->width, mlx->height);
+		fdf->camera.aspect_ratio = (float)mlx->width / mlx->height;
+		if (!fdf->image)
 		{
 			mlx_close_window(mlx);
 			return ;
 		}
-		mlx_image_to_window(mlx, fdf_data->image->mlx_img, 0, 0);
-		fdf_data->need_redraw = true;
+		mlx_image_to_window(mlx, fdf->image->mlx_img, 0, 0);
+		fdf->need_redraw = true;
 	}
-	if (fdf_data->need_redraw)
-		draw_with_camera(fdf_data->image, &fdf_data->mesh, &fdf_data->camera);
-	fdf_data->need_redraw = false;
+	if (fdf->need_redraw)
+		draw_with_camera(fdf->image, &fdf->mesh, &fdf->camera);
+	fdf->need_redraw = false;
 }
 
 int	main(int argc, char **argv)
 {
-	t_data	data;
+	t_fdf	fdf;
 
 	if (argc != 2)
 		return (3);
-	if (!map_load(&data.mesh, argv[1]))
+	if (!map_load(&fdf.mesh, argv[1]))
 		return (2);
-	data.mlx = mlx_init(1500, 1125, "fdf", true);
-	if (!data.mlx)
+	fdf.mlx = mlx_init(1500, 1125, "fdf", true);
+	if (!fdf.mlx)
 		return (1);
-	data.image = z_image_new(data.mlx, data.mlx->width, data.mlx->height);
-	camera_reset(&data.camera);
-	data.camera.aspect_ratio = (float)data.mlx->width / data.mlx->height;
-	if (data.image)
+	fdf.image = z_image_new(fdf.mlx, fdf.mlx->width, fdf.mlx->height);
+	camera_reset(&fdf.camera);
+	fdf.camera.aspect_ratio = (float)fdf.mlx->width / fdf.mlx->height;
+	if (fdf.image)
 	{
-		mlx_key_hook(data.mlx, key_hook, &data);
-		mlx_loop_hook(data.mlx, loop_hook, &data);
-		data.need_redraw = true;
-		mlx_image_to_window(data.mlx, data.image->mlx_img, 0, 0);
+		mlx_key_hook(fdf.mlx, key_hook, &fdf);
+		mlx_loop_hook(fdf.mlx, loop_hook, &fdf);
+		fdf.need_redraw = true;
+		mlx_image_to_window(fdf.mlx, fdf.image->mlx_img, 0, 0);
 	}
-	mlx_loop(data.mlx);
-	z_image_delete(data.mlx, data.image);
-	mlx_terminate(data.mlx);
-	free(data.mesh.lines);
-	free(data.mesh.vertices);
+	mlx_loop(fdf.mlx);
+	z_image_delete(fdf.mlx, fdf.image);
+	mlx_terminate(fdf.mlx);
+	free(fdf.mesh.lines);
+	free(fdf.mesh.vertices);
 }
