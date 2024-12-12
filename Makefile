@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/10 17:12:22 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/12 19:51:00 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ SRCS := $(addprefix $(SRCDIR)/,\
 	vec_mat/mat.c \
 	vec_mat/vec_mat_helper.c \
 	rotation.c \
-	camera.c \
+	camera/camera_control.c \
+	camera/camera_transform.c \
 	z_image.c \
 )
 
