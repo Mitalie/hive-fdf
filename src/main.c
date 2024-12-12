@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/12 21:18:00 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/12 21:20:19 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "line.h"
 #include "mesh.h"
 #include "map.h"
+#include "input.h"
 
 static void	draw_with_camera(t_z_image *image, t_mesh *mesh, t_camera *camera)
 {
@@ -46,27 +47,7 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 		camera_reset(&fdf->camera);
 	else if (key_data.action == MLX_PRESS || key_data.action == MLX_REPEAT)
 	{
-		if (key_data.key == MLX_KEY_LEFT)
-			camera_rotate(&fdf->camera, CAM_LEFT, 5);
-		else if (key_data.key == MLX_KEY_RIGHT)
-			camera_rotate(&fdf->camera, CAM_RIGHT, 5);
-		else if (key_data.key == MLX_KEY_UP)
-			camera_rotate(&fdf->camera, CAM_UP, 5);
-		else if (key_data.key == MLX_KEY_DOWN)
-			camera_rotate(&fdf->camera, CAM_DOWN, 5);
-		else if (key_data.key == MLX_KEY_W)
-			camera_move(&fdf->camera, CAM_FRONT, 1);
-		else if (key_data.key == MLX_KEY_S)
-			camera_move(&fdf->camera, CAM_BACK, 1);
-		else if (key_data.key == MLX_KEY_A)
-			camera_move(&fdf->camera, CAM_LEFT, 1);
-		else if (key_data.key == MLX_KEY_D)
-			camera_move(&fdf->camera, CAM_RIGHT, 1);
-		else if (key_data.key == MLX_KEY_Q)
-			camera_move(&fdf->camera, CAM_UP, 1);
-		else if (key_data.key == MLX_KEY_Z)
-			camera_move(&fdf->camera, CAM_DOWN, 1);
-		else if (key_data.key == MLX_KEY_P)
+		if (key_data.key == MLX_KEY_P)
 			fdf->camera.perspective = !fdf->camera.perspective;
 		else if (key_data.key == MLX_KEY_M)
 			fdf->camera.move_angled = !fdf->camera.move_angled;
@@ -99,6 +80,7 @@ static void	loop_hook(void *param)
 		mlx_image_to_window(mlx, fdf->image->mlx_img, 0, 0);
 		fdf->need_redraw = true;
 	}
+	input_timed(fdf);
 	if (fdf->need_redraw)
 		draw_with_camera(fdf->image, &fdf->mesh, &fdf->camera);
 	fdf->need_redraw = false;
