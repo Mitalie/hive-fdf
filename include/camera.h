@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 14:52:49 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 18:33:02 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/12 20:12:51 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,18 @@ typedef struct s_camera
 	bool	move_angled;
 }	t_camera;
 
+typedef enum e_camera_dir
+{
+	CAM_RIGHT,
+	CAM_LEFT,
+	CAM_UP,
+	CAM_DOWN,
+	CAM_BACK,
+	CAM_FRONT,
+}	t_camera_dir;
+
 void	camera_reset(t_camera *camera);
-void	camera_move(t_camera *camera, float right, float up, float back);
+void	camera_move(t_camera *camera, t_camera_dir dir, float amount);
 t_mat4	camera_transformation(t_camera *camera);
 
 #endif

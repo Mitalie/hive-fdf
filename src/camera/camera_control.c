@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:48:24 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/12 19:49:17 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/12 20:13:03 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,23 @@ void	camera_reset(t_camera *camera)
 	camera->move_angled = false;
 }
 
-void	camera_move(t_camera *camera, float right, float up, float back)
+void	camera_move(t_camera *camera, t_camera_dir dir, float amount)
 {
 	t_mat4	transform;
-	t_mat4	next;
+	t_mat4	transform_pre;
 	t_vec4	movement;
 
+	movement = vec4(
+			amount * ((dir == CAM_RIGHT) - (dir == CAM_LEFT)),
+			amount * ((dir == CAM_UP) - (dir == CAM_DOWN)),
+			amount * ((dir == CAM_BACK) - (dir == CAM_FRONT)),
+			0);
+	transform = rotation_y(camera->azimuth_deg);
 	if (camera->perspective && camera->move_angled)
 	{
-		transform = rotation_x(camera->elevation_deg);
-		next = rotation_y(camera->azimuth_deg);
-		transform = mul_mm4(&next, &transform);
+		transform_pre = rotation_x(camera->elevation_deg);
+		transform = mul_mm4(&transform, &transform_pre);
 	}
-	else
-		transform = rotation_y(camera->azimuth_deg);
-	movement = mul_mv4(&transform, vec4(right, up, back, 0));
+	movement = mul_mv4(&transform, movement);
 	camera->position = add4(camera->position, movement);
 }

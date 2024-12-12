@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/11 16:10:15 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/12 20:12:21 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,17 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 		else if (key_data.key == MLX_KEY_DOWN)
 			fdf_data->camera.elevation_deg -= 2;
 		else if (key_data.key == MLX_KEY_W)
-			camera_move(&fdf_data->camera, 0, 0, -1);
+			camera_move(&fdf_data->camera, CAM_FRONT, 1);
 		else if (key_data.key == MLX_KEY_S)
-			camera_move(&fdf_data->camera, 0, 0, 1);
+			camera_move(&fdf_data->camera, CAM_BACK, 1);
 		else if (key_data.key == MLX_KEY_A)
-			camera_move(&fdf_data->camera, -1, 0, 0);
+			camera_move(&fdf_data->camera, CAM_LEFT, 1);
 		else if (key_data.key == MLX_KEY_D)
-			camera_move(&fdf_data->camera, 1, 0, 0);
+			camera_move(&fdf_data->camera, CAM_RIGHT, 1);
 		else if (key_data.key == MLX_KEY_Q)
-			camera_move(&fdf_data->camera, 0, 1, 0);
+			camera_move(&fdf_data->camera, CAM_UP, 1);
 		else if (key_data.key == MLX_KEY_Z)
-			camera_move(&fdf_data->camera, 0, -1, 0);
+			camera_move(&fdf_data->camera, CAM_DOWN, 1);
 		else if (key_data.key == MLX_KEY_P)
 			fdf_data->camera.perspective = !fdf_data->camera.perspective;
 		else if (key_data.key == MLX_KEY_M)
