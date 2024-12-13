@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:12:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/02 17:59:01 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:41:00 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,14 @@ void	map_builder_release(t_map_builder *builder)
 /*
 	Center the model in the horizontal plane
 */
-static void	map_builder_adjust_vertices(t_map_builder *builder, t_mesh *mesh)
+static void	map_builder_set_position(t_map_builder *builder, t_mesh *mesh)
 {
-	uint32_t	i;
 	float		adj_x;
 	float		adj_z;
 
-	adj_x = (builder->max_x - 1) * -0.5f;
-	adj_z = (builder->z - 1) * -0.5f;
-	i = 0;
-	while (i < builder->n_vertices)
-	{
-		mesh->vertices[i].pos.x += adj_x;
-		mesh->vertices[i].pos.z += adj_z;
-		i++;
-	}
+	adj_x = -0.5f * (builder->max_x - 1);
+	adj_z = -0.5f * (builder->z - 1);
+	mesh->pos = vec4(adj_x, 0, adj_z, 1);
 }
 
 bool	map_builder_finalize(t_map_builder *builder, t_mesh *mesh)
@@ -63,6 +56,6 @@ bool	map_builder_finalize(t_map_builder *builder, t_mesh *mesh)
 		free(mesh->lines);
 		return (false);
 	}
-	map_builder_adjust_vertices(builder, mesh);
+	map_builder_set_position(builder, mesh);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:24:11 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 20:33:29 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:40:45 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_mesh
 	t_vertex	*vertices;
 	t_line		*lines;
 	uint32_t	n_lines;
+	t_vec4		pos;
 }	t_mesh;
 
 void	draw_mesh(t_z_image *image, t_mesh *mesh, t_mat4 *transform);
