@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/11 17:42:37 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:48:20 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@
 */
 
 static const t_vec4	g_clip_plane_normals[] = {
-	(t_vec4){.v = {0, 0, 0, 1}},	// Behind (perspective):     w >= 0
+	(t_vec4){.v = {0, 0, -1, 1}},	// Near:    z <=  w      w - z >= 0
 	(t_vec4){.v = {-1, 0, 0, 1}},	// Right:   x <=  w      w - x >= 0
 	(t_vec4){.v = {1, 0, 0, 1}},	// Left:    x >= -w      w + x >= 0
 	(t_vec4){.v = {0, 1, 0, 1}},	// Top:     y <=  w      w - y >= 0
