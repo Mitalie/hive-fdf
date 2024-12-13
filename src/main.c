@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/12 21:20:19 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:42:56 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,21 @@
 #include "map.h"
 #include "input.h"
 
-static void	draw_with_camera(t_z_image *image, t_mesh *mesh, t_camera *camera)
+static void	fdf_draw(t_fdf *fdf)
 {
 	t_mat4	transform;
+	float	height_scale;
 
-	transform = camera_transformation(camera);
-	if (camera->perspective)
-		z_image_clear(image, 0.0f, 0x000000ff);
+	if (!fdf->need_redraw)
+		return ;
+	fdf->need_redraw = false;
+	transform = camera_transformation(&fdf->camera);
+	if (fdf->camera.perspective)
+		z_image_clear(fdf->image, 0.0f, 0x000000ff);
 	else
-		z_image_clear(image, -INFINITY, 0x000000ff);
-	draw_mesh(image, mesh, &transform);
+		z_image_clear(fdf->image, -INFINITY, 0x000000ff);
+	height_scale = powf(2, fdf->height_scale_exp);
+	draw_mesh(fdf->image, &fdf->mesh, &transform, height_scale);
 }
 
 static void	key_hook(mlx_key_data_t key_data, void *param)
@@ -44,7 +49,10 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 		return ;
 	}
 	else if (key_data.key == MLX_KEY_R && key_data.action == MLX_PRESS)
+	{
 		camera_reset(&fdf->camera);
+		fdf->height_scale_exp = -2;
+	}
 	else if (key_data.action == MLX_PRESS || key_data.action == MLX_REPEAT)
 	{
 		if (key_data.key == MLX_KEY_P)
@@ -55,6 +63,10 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 			fdf->camera.zoom_exp += 0.5f;
 		else if (key_data.key == MLX_KEY_KP_SUBTRACT)
 			fdf->camera.zoom_exp -= 0.5f;
+		else if (key_data.key == MLX_KEY_PAGE_UP)
+			fdf->height_scale_exp += 0.5f;
+		else if (key_data.key == MLX_KEY_PAGE_DOWN)
+			fdf->height_scale_exp -= 0.5f;
 	}
 	fdf->need_redraw = true;
 }
@@ -81,9 +93,7 @@ static void	loop_hook(void *param)
 		fdf->need_redraw = true;
 	}
 	input_timed(fdf);
-	if (fdf->need_redraw)
-		draw_with_camera(fdf->image, &fdf->mesh, &fdf->camera);
-	fdf->need_redraw = false;
+	fdf_draw(fdf);
 }
 
 int	main(int argc, char **argv)
@@ -100,6 +110,7 @@ int	main(int argc, char **argv)
 	fdf.image = z_image_new(fdf.mlx, fdf.mlx->width, fdf.mlx->height);
 	camera_reset(&fdf.camera);
 	fdf.camera.aspect_ratio = (float)fdf.mlx->width / fdf.mlx->height;
+	fdf.height_scale_exp = -2;
 	if (fdf.image)
 	{
 		mlx_key_hook(fdf.mlx, key_hook, &fdf);

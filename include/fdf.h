@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 20:39:26 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/12 20:44:57 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:42:47 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_fdf {
 	t_mesh		mesh;
 	t_camera	camera;
 	bool		need_redraw;
+	float		height_scale_exp;
 }	t_fdf;
 
 #endif

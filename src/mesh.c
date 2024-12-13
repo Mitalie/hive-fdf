@@ -6,14 +6,15 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:29:17 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/13 18:40:54 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:42:58 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mesh.h"
 #include "line.h"
 
-void	draw_mesh(t_z_image *image, t_mesh *mesh, t_mat4 *transform)
+void	draw_mesh(t_z_image *image, t_mesh *mesh, t_mat4 *transform,
+	float height_scale)
 {
 	uint32_t	i;
 	t_line		line;
@@ -23,7 +24,7 @@ void	draw_mesh(t_z_image *image, t_mesh *mesh, t_mat4 *transform)
 
 	mesh_transform = mat4(
 			vec4(1, 0, 0, mesh->pos.x),
-			vec4(0, 1, 0, mesh->pos.y),
+			vec4(0, height_scale, 0, mesh->pos.y),
 			vec4(0, 0, 1, mesh->pos.z),
 			vec4(0, 0, 0, 1));
 	mesh_transform = mul_mm4(transform, &mesh_transform);
