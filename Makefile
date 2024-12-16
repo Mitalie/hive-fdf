@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/16 16:16:00 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/16 21:52:27 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,13 +75,13 @@ fclean: clean
 re: fclean all
 
 # Default compiler flags that apply to all targets
-def_CFLAGS := -Wall -Wextra -Werror
+def_CFLAGS := -Wall -Wextra -Werror -g
 def_CPPFLAGS := -MMD -MP $(addprefix -I ,$(INCDIRS))
 
 # Add sanitizer flags if requested
 ifneq (,$(strip $(SANITIZE)))
-	def_CFLAGS += -g -fsanitize=$(SANITIZE)
-	def_LDFLAGS += -g -fsanitize=$(SANITIZE)
+	def_CFLAGS += -fsanitize=$(SANITIZE)
+	def_LDFLAGS += -fsanitize=$(SANITIZE)
 endif
 
 # Combine default def_FLAGS, target specific tgt_FLAGS and user-supplied FLAGS
