@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:24:11 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/16 15:33:24 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 15:56:02 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_mesh
 {
 	t_vertex	*vertices;
 	t_line		*lines;
+	uint32_t	n_vertices;
 	uint32_t	n_lines;
 	t_vec4		pos;
 	t_vec4		scale;

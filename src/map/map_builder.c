@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:12:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/16 15:34:49 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 15:56:20 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static void	map_builder_set_position(t_map_builder *builder, t_mesh *mesh)
 bool	map_builder_finalize(t_map_builder *builder, t_mesh *mesh)
 {
 	mesh->vertices = buffer_finalize(&builder->vertices);
+	mesh->n_vertices = builder->n_vertices;
 	mesh->lines = buffer_finalize(&builder->lines);
 	mesh->n_lines = builder->n_lines;
 	map_builder_release(builder);
