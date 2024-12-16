@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 15:22:54 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/16 16:15:49 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 22:05:02 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@
 /*
 	The union allows using either named xyzw fields or indices to access same
 	data.
-
-	At 16 bytes, this struct is small enough that it can be passed and returned
-	by value in registers on x84-64 System V ABI.
 */
 
 typedef union u_vec4
@@ -45,9 +42,6 @@ t_vec4	min4(t_vec4 a, t_vec4 b);
 /*
 	Matrices are stored in column-major order to allow optimizing compiler to
 	generate more efficient SIMD instructions for matrix-vector multiplication.
-
-	At 64 bytes, this struct should probably be passed by reference to prevent
-	unnecessary copying.
 */
 
 typedef struct s_mat4
@@ -55,9 +49,9 @@ typedef struct s_mat4
 	t_vec4	col[4];
 }	t_mat4;
 
-t_vec4	mul_mv4(const t_mat4 *m, t_vec4 v);
-t_mat4	mul_mm4(const t_mat4 *a, const t_mat4 *b);
-t_mat4	transpose4(const t_mat4 *m);
+t_vec4	mul_mv4(t_mat4 m, t_vec4 v);
+t_mat4	mul_mm4(t_mat4 a, t_mat4 b);
+t_mat4	transpose4(t_mat4 m);
 
 /*
 	Helper functions to make creating matrices in code slightly more ergonomic.

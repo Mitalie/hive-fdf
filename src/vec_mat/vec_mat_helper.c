@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:10:58 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/04 17:50:17 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 22:13:36 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ t_mat4	mat4(t_vec4 row0, t_vec4 row1, t_vec4 row2, t_vec4 row3)
 		.col[2] = row2,
 		.col[3] = row3,
 	};
-	return (transpose4(&m));
+	return (transpose4(m));
 }

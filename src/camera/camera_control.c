@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:48:24 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/12 20:34:18 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 22:07:56 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	camera_move(t_camera *camera, t_camera_dir dir, float amount)
 	if (camera->perspective && camera->move_angled)
 	{
 		transform_pre = rotation_x(camera->elevation_deg);
-		transform = mul_mm4(&transform, &transform_pre);
+		transform = mul_mm4(transform, transform_pre);
 	}
-	movement = mul_mv4(&transform, movement);
+	movement = mul_mv4(transform, movement);
 	camera->position = add4(camera->position, movement);
 }
 

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:02:26 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/13 18:09:07 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 22:08:08 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,13 +97,13 @@ t_mat4	camera_transformation(t_camera *camera)
 			vec4(0, 0, 1, -camera->position.z),
 			vec4(0, 0, 0, 1));
 	next = rotation_y(-camera->azimuth_deg);
-	transform = mul_mm4(&next, &transform);
+	transform = mul_mm4(next, transform);
 	next = rotation_x(-camera->elevation_deg);
-	transform = mul_mm4(&next, &transform);
+	transform = mul_mm4(next, transform);
 	if (camera->perspective)
 		next = camera_projection_perspective(camera);
 	else
 		next = camera_projection_orthograpic(camera);
-	transform = mul_mm4(&next, &transform);
+	transform = mul_mm4(next, transform);
 	return (transform);
 }
