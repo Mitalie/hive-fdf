@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/16 21:54:56 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/16 22:00:19 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,13 @@ INCDIRS := include
 MLX42 := lib/MLX42/build/libmlx42.a
 INCDIRS += lib/MLX42/include
 MLX42LIBS := -lglfw
+ifdef DEBUG
+	MLX42_FLAGS = -DDEBUG=1
+else
+	MLX42_FLAGS = -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=1
+endif
 $(MLX42): mlx42-make
-	cmake lib/MLX42 -B lib/MLX42/build -DDEBUG=1
+	cmake lib/MLX42 -B lib/MLX42/build $(MLX42_FLAGS)
 	cmake --build lib/MLX42/build
 mlx42-clean:
 	rm -rf lib/MLX42/build
