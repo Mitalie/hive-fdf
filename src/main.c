@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/13 18:42:56 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 15:25:47 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static void	fdf_draw(t_fdf *fdf)
 	else
 		z_image_clear(fdf->image, -INFINITY, 0x000000ff);
 	height_scale = powf(2, fdf->height_scale_exp);
-	draw_mesh(fdf->image, &fdf->mesh, &transform, height_scale);
+	fdf->mesh.scale.y = height_scale;
+	draw_mesh(fdf->image, &fdf->mesh, &transform);
 }
 
 static void	key_hook(mlx_key_data_t key_data, void *param)

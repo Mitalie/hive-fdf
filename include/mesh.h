@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:24:11 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/13 18:42:50 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 15:33:24 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,15 @@ typedef struct s_mesh
 	t_line		*lines;
 	uint32_t	n_lines;
 	t_vec4		pos;
+	t_vec4		scale;
 }	t_mesh;
 
-void	draw_mesh(t_z_image *image, t_mesh *mesh, t_mat4 *transform,
-			float height_scale);
+/*
+	Position and scale should really be properties of a mesh instance, with
+	multiple instances able to reference the same mesh. We only display one mesh
+	at a time though, so skip the extra layer of indirection for now.
+*/
+
+void	draw_mesh(t_z_image *image, t_mesh *mesh, t_mat4 *transform);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:12:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/13 18:41:00 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 15:34:49 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ bool	map_builder_finalize(t_map_builder *builder, t_mesh *mesh)
 		return (false);
 	}
 	map_builder_set_position(builder, mesh);
+	mesh->scale = vec4(1, 1, 1, 1);
 	return (true);
 }
