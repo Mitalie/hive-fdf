@@ -6,11 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:29:17 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/16 16:13:56 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 16:19:36 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mesh.h"
+#include <math.h>
 #include "line.h"
 
 static t_mat4	mesh_combine_transform(t_mesh *mesh, t_mat4 *transform)
@@ -44,4 +45,27 @@ void	draw_mesh(t_z_image *image, t_mesh *mesh, t_mat4 *transform)
 		b.pos = mul_mv4(&combined_transform, b.pos);
 		draw_line(image, a, b);
 	}
+}
+
+void	mesh_calculate_box(t_mesh *mesh, t_mat4 *transform,
+			t_vec4 *box_min, t_vec4 *box_max)
+{
+	uint32_t	i;
+	t_mat4		combined_transform;
+	t_vec4		pos;
+	t_vec4		max;
+	t_vec4		min;
+
+	combined_transform = mesh_combine_transform(mesh, transform);
+	max = vec4(-INFINITY, -INFINITY, -INFINITY, -INFINITY);
+	min = vec4(INFINITY, INFINITY, INFINITY, INFINITY);
+	i = 0;
+	while (i < mesh->n_vertices)
+	{
+		pos = mul_mv4(&combined_transform, mesh->vertices[i++].pos);
+		min = min4(min, pos);
+		max = max4(max, pos);
+	}
+	*box_min = min;
+	*box_max = max;
 }

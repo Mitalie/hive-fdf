@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:24:11 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/16 15:56:02 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 16:17:15 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,7 @@ typedef struct s_mesh
 */
 
 void	draw_mesh(t_z_image *image, t_mesh *mesh, t_mat4 *transform);
+void	mesh_calculate_box(t_mesh *mesh, t_mat4 *transform,
+			t_vec4 *box_min, t_vec4 *box_max);
 
 #endif
