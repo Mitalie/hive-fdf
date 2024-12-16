@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/12 21:12:09 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/16 16:16:00 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS := $(addprefix $(SRCDIR)/,\
 	map/map_load.c \
 	parse_int.c \
 	vec_mat/vec.c \
+	vec_mat/vec_maxmin.c \
 	vec_mat/mat.c \
 	vec_mat/vec_mat_helper.c \
 	rotation.c \

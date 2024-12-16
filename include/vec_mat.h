@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 15:22:54 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/11 14:56:55 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 16:15:49 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ t_vec4	sub4(t_vec4 a, t_vec4 b);
 t_vec4	mul_sv4(float s, t_vec4 v);
 t_vec4	lerp4(t_vec4 a, t_vec4 b, float t);
 float	dot4(t_vec4 a, t_vec4 b);
+t_vec4	max4(t_vec4 a, t_vec4 b);
+t_vec4	min4(t_vec4 a, t_vec4 b);
 
 /*
 	Matrices are stored in column-major order to allow optimizing compiler to
