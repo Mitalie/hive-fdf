@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/16 21:52:27 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/16 21:54:56 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,9 @@ mlx42-clean:
 	rm -rf lib/MLX42/build
 clean: mlx42-clean
 .PHONY: mlx42-clean mlx42-make
+
+# Optimization flags
+OPT_FLAGS := -flto -O3
 
 # Project files and targets
 SRCS := $(addprefix $(SRCDIR)/,\
@@ -82,6 +85,12 @@ def_CPPFLAGS := -MMD -MP $(addprefix -I ,$(INCDIRS))
 ifneq (,$(strip $(SANITIZE)))
 	def_CFLAGS += -fsanitize=$(SANITIZE)
 	def_LDFLAGS += -fsanitize=$(SANITIZE)
+endif
+
+# Add optimization flags unless debug requested
+ifndef DEBUG
+	def_CFLAGS += $(OPT_FLAGS)
+	def_LDFLAGS += $(OPT_FLAGS)
 endif
 
 # Combine default def_FLAGS, target specific tgt_FLAGS and user-supplied FLAGS
