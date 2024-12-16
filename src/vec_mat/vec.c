@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:59:07 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/11 14:57:57 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 21:08:54 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ t_vec4	lerp4(t_vec4 a, t_vec4 b, float t)
 	return (add4(a, b));
 }
 
-/*
-	dot4 implementation is located in mat.c for optimization reasons
-*/
+float	dot4(t_vec4 a, t_vec4 b)
+{
+	return (
+		+ a.v[0] * b.v[0]
+		+ a.v[1] * b.v[1]
+		+ a.v[2] * b.v[2]
+		+ a.v[3] * b.v[3]
+	);
+}

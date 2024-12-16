@@ -6,26 +6,11 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 16:48:49 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/04 18:08:30 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/16 22:03:24 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec_mat.h"
-
-/*
-	This function would logically belong to vec.c, but having it visible in this
-	translation unit is critical for optimization of mul_mv4 and mul_mm4 without
-	relying on link-time optimization.
-*/
-float	dot4(t_vec4 a, t_vec4 b)
-{
-	return (
-		+ a.v[0] * b.v[0]
-		+ a.v[1] * b.v[1]
-		+ a.v[2] * b.v[2]
-		+ a.v[3] * b.v[3]
-	);
-}
 
 static t_vec4	row(const t_mat4 *m, int row)
 {
@@ -38,10 +23,10 @@ static t_vec4	row(const t_mat4 *m, int row)
 }
 
 /*
-	With -O2 optimization, the compiler inlines these calls and computes each
-	row's dot product in parallel with SIMD instructions. Thanks to column major
-	order, each column can be read and multiplied in one go without having to
-	shuffle elements around.
+	With -O2 -flto optimization, the compiler inlines these calls and computes
+	each row's dot product in parallel with SIMD instructions. Thanks to column
+	major order, each column can be read and multiplied in one go without having
+	to shuffle elements around.
 */
 
 t_vec4	mul_mv4(const t_mat4 *m, t_vec4 v)
