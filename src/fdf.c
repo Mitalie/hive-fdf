@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:02:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/17 17:15:17 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:41:33 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,23 @@ void	fdf_reset(t_fdf *fdf)
 {
 	camera_reset(&fdf->camera);
 	fdf->height_scale_exp = -2;
+	fdf_fit(fdf);
+}
+
+void	fdf_fit(t_fdf *fdf)
+{
+	t_mat4	camera_transform;
+	float	height_scale;
+	t_vec4	box_min;
+	t_vec4	box_max;
+
+	if (fdf->camera.perspective)
+		return ;
+	camera_transform = camera_transformation(&fdf->camera);
+	height_scale = powf(2, fdf->height_scale_exp);
+	fdf->mesh.scale.y = height_scale;
+	mesh_calculate_box(&fdf->mesh, camera_transform, &box_min, &box_max);
+	camera_fit_box(&fdf->camera, box_min, box_max);
 }
 
 void	fdf_draw(t_fdf *fdf)

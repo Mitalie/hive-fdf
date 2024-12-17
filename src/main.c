@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/17 17:15:15 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:41:39 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 			fdf->height_scale_exp += 0.5f;
 		else if (key_data.key == MLX_KEY_PAGE_DOWN)
 			fdf->height_scale_exp -= 0.5f;
+		else if (key_data.key == MLX_KEY_F)
+			fdf_fit(fdf);
 	}
 	fdf->need_redraw = true;
 }
