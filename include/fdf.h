@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 20:39:26 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/17 17:14:11 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:15:19 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_fdf {
 }	t_fdf;
 
 void	fdf_recreate_image(t_fdf *fdf);
+void	fdf_reset(t_fdf *fdf);
 void	fdf_draw(t_fdf *fdf);
 
 #endif

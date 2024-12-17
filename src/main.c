@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/17 17:10:42 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:15:15 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 		return ;
 	}
 	else if (key_data.key == MLX_KEY_R && key_data.action == MLX_PRESS)
-	{
-		camera_reset(&fdf->camera);
-		fdf->height_scale_exp = -2;
-	}
+		fdf_reset(fdf);
 	else if (key_data.action == MLX_PRESS || key_data.action == MLX_REPEAT)
 	{
 		if (key_data.key == MLX_KEY_P)
@@ -74,8 +71,7 @@ int	main(int argc, char **argv)
 		return (1);
 	fdf.image = 0;
 	fdf_recreate_image(&fdf);
-	camera_reset(&fdf.camera);
-	fdf.height_scale_exp = -2;
+	fdf_reset(&fdf);
 	mlx_key_hook(fdf.mlx, key_hook, &fdf);
 	mlx_loop_hook(fdf.mlx, loop_hook, &fdf);
 	mlx_loop(fdf.mlx);

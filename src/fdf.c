@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:02:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/17 17:11:11 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:15:17 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,12 @@ void	fdf_recreate_image(t_fdf *fdf)
 	mlx_image_to_window(mlx, fdf->image->mlx_img, 0, 0);
 	fdf->camera.aspect_ratio = (float)mlx->width / mlx->height;
 	fdf->need_redraw = true;
+}
+
+void	fdf_reset(t_fdf *fdf)
+{
+	camera_reset(&fdf->camera);
+	fdf->height_scale_exp = -2;
 }
 
 void	fdf_draw(t_fdf *fdf)
