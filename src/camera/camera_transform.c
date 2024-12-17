@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:02:26 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/16 22:08:08 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/17 15:04:24 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static t_mat4	camera_projection_perspective(t_camera *camera)
 	float	y_scale;
 	float	x_scale;
 
-	y_scale = 2 * powf(2, camera->zoom_exp);
+	y_scale = powf(2, camera->zoom_exp);
 	x_scale = y_scale / camera->aspect_ratio;
 	transform = mat4(
 			vec4(x_scale, 0, 0, 0),
@@ -56,12 +56,6 @@ static t_mat4	camera_projection_perspective(t_camera *camera)
 	Orthogonal projection could work without near clip plane if we scale z to
 	stay below 1, but being able to "peel" away geometry and seeing what's
 	behind it is cool.
-
-	sqrt(300) is length of the default camera vector (10,10,10) so that the
-	initial ortho and perspective scales match at that distance.
-
-	TODO: this may change with separation of ortho and perspective, or maybe
-	a smart bounding box for startup view is required.
 */
 
 static t_mat4	camera_projection_orthograpic(t_camera *camera)
@@ -70,7 +64,7 @@ static t_mat4	camera_projection_orthograpic(t_camera *camera)
 	float	y_scale;
 	float	x_scale;
 
-	y_scale = 1 / sqrtf(300) * 2 * powf(2, camera->zoom_exp);
+	y_scale = powf(2, camera->zoom_exp);
 	x_scale = y_scale / camera->aspect_ratio;
 	transform = mat4(
 			vec4(x_scale, 0, 0, 0),
