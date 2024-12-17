@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/16 22:00:19 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/17 17:07:09 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ OPT_FLAGS := -flto -O3
 # Project files and targets
 SRCS := $(addprefix $(SRCDIR)/,\
 	main.c \
+	fdf.c \
 	color.c \
 	line/line.c \
 	mesh.c \
