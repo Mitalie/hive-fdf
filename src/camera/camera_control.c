@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:48:24 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/16 22:07:56 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/17 15:40:45 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,37 @@
 
 void	camera_reset(t_camera *camera)
 {
-	camera->position = vec4(10, 10, 10, 1);
+	camera->position = vec4(10, 10, 10, 0);
 	camera->azimuth_deg = 45;
 	camera->elevation_deg = -35.2643897f;
 	camera->zoom_exp = 0;
 	camera->perspective = false;
 	camera->move_angled = false;
+}
+
+/*
+	Toggle between perspective and orthographic projection.
+
+	Attempt to adjust zoom level to keep the view similar, but we don't know
+	actual distance to the part of the object in center of view, so we assume
+	based on distance to plane that passes through origin.
+
+	The position w coordinate needs to be zeroed or it incorrectly affects the
+	distance calculation. It's not used anyway, but we don't have a separate
+	vec3 type.
+*/
+void	camera_toggle_mode(t_camera *camera)
+{
+	float	camera_dist;
+	float	zoom_exp_delta;
+
+	camera->position.w = 0;
+	camera_dist = sqrtf(dot4(camera->position, camera->position));
+	zoom_exp_delta = log2f(camera_dist);
+	if (camera->perspective)
+		zoom_exp_delta = -zoom_exp_delta;
+	camera->zoom_exp += zoom_exp_delta;
+	camera->perspective = !camera->perspective;
 }
 
 void	camera_move(t_camera *camera, t_camera_dir dir, float amount)

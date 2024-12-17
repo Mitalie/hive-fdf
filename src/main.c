@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/16 22:13:26 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/17 15:41:10 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 	else if (key_data.action == MLX_PRESS || key_data.action == MLX_REPEAT)
 	{
 		if (key_data.key == MLX_KEY_P)
-			fdf->camera.perspective = !fdf->camera.perspective;
+			camera_toggle_mode(&fdf->camera);
 		else if (key_data.key == MLX_KEY_M)
 			fdf->camera.move_angled = !fdf->camera.move_angled;
 		else if (key_data.key == MLX_KEY_KP_ADD)
