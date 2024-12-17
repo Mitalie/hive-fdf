@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/17 17:06:42 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:10:42 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,24 +54,9 @@ static void	key_hook(mlx_key_data_t key_data, void *param)
 static void	loop_hook(void *param)
 {
 	t_fdf	*fdf;
-	mlx_t	*mlx;
 
 	fdf = param;
-	mlx = fdf->mlx;
-	if (fdf->image->mlx_img->width != (uint32_t)mlx->width
-		|| fdf->image->mlx_img->height != (uint32_t)mlx->height)
-	{
-		z_image_delete(mlx, fdf->image);
-		fdf->image = z_image_new(mlx, mlx->width, mlx->height);
-		fdf->camera.aspect_ratio = (float)mlx->width / mlx->height;
-		if (!fdf->image)
-		{
-			mlx_close_window(mlx);
-			return ;
-		}
-		mlx_image_to_window(mlx, fdf->image->mlx_img, 0, 0);
-		fdf->need_redraw = true;
-	}
+	fdf_recreate_image(fdf);
 	input_timed(fdf);
 	fdf_draw(fdf);
 }
@@ -87,19 +72,15 @@ int	main(int argc, char **argv)
 	fdf.mlx = mlx_init(1500, 1125, "fdf", true);
 	if (!fdf.mlx)
 		return (1);
-	fdf.image = z_image_new(fdf.mlx, fdf.mlx->width, fdf.mlx->height);
+	fdf.image = 0;
+	fdf_recreate_image(&fdf);
 	camera_reset(&fdf.camera);
-	fdf.camera.aspect_ratio = (float)fdf.mlx->width / fdf.mlx->height;
 	fdf.height_scale_exp = -2;
-	if (fdf.image)
-	{
-		mlx_key_hook(fdf.mlx, key_hook, &fdf);
-		mlx_loop_hook(fdf.mlx, loop_hook, &fdf);
-		fdf.need_redraw = true;
-		mlx_image_to_window(fdf.mlx, fdf.image->mlx_img, 0, 0);
-	}
+	mlx_key_hook(fdf.mlx, key_hook, &fdf);
+	mlx_loop_hook(fdf.mlx, loop_hook, &fdf);
 	mlx_loop(fdf.mlx);
-	z_image_delete(fdf.mlx, fdf.image);
+	if (fdf.image)
+		z_image_delete(fdf.mlx, fdf.image);
 	mlx_terminate(fdf.mlx);
 	free(fdf.mesh.lines);
 	free(fdf.mesh.vertices);

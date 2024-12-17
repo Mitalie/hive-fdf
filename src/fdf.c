@@ -6,15 +6,43 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:02:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/17 17:06:53 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:11:11 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <math.h>
+#include "MLX42/MLX42.h"
 #include "camera.h"
 #include "mesh.h"
 #include "z_image.h"
+
+/*
+	Create or recreate image. Does nothing if image exists and matches current
+	window size.
+*/
+void	fdf_recreate_image(t_fdf *fdf)
+{
+	mlx_t	*mlx;
+
+	mlx = fdf->mlx;
+	if (fdf->image
+		&& fdf->image->mlx_img->height == (uint32_t)mlx->height
+		&& fdf->image->mlx_img->width == (uint32_t)mlx->width
+	)
+		return ;
+	if (fdf->image)
+		z_image_delete(fdf->mlx, fdf->image);
+	fdf->image = z_image_new(mlx, mlx->width, mlx->height);
+	if (!fdf->image)
+	{
+		mlx_close_window(mlx);
+		return ;
+	}
+	mlx_image_to_window(mlx, fdf->image->mlx_img, 0, 0);
+	fdf->camera.aspect_ratio = (float)mlx->width / mlx->height;
+	fdf->need_redraw = true;
+}
 
 void	fdf_draw(t_fdf *fdf)
 {
