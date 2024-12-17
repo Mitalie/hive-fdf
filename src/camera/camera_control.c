@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:48:24 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/17 15:40:45 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:13:56 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,39 @@ void	camera_toggle_mode(t_camera *camera)
 		zoom_exp_delta = -zoom_exp_delta;
 	camera->zoom_exp += zoom_exp_delta;
 	camera->perspective = !camera->perspective;
+}
+
+/*
+	Leave a tiny bit of space around the model when fitting to view.
+*/
+#define FIT_TARGET_SIZE 0.98f
+
+/*
+	Match view to a bounding box. Only makes sense with orthographic projection.
+	The box must have been calculated with the current camera settings.
+*/
+void	camera_fit_box(t_camera *camera, t_vec4 box_min, t_vec4 box_max)
+{
+	t_vec4	size;
+	t_vec4	center;
+	float	scale;
+	t_vec4	shift;
+	t_mat4	transform;
+
+	center = mul_sv4(0.5f, add4(box_min, box_max));
+	scale = powf(2, -camera->zoom_exp);
+	shift = vec4(
+			center.x * scale * camera->aspect_ratio,
+			center.y * scale,
+			box_max.z,
+			0);
+	transform = mul_mm4(
+			rotation_y(camera->azimuth_deg),
+			rotation_x(camera->elevation_deg));
+	shift = mul_mv4(transform, shift);
+	camera->position = add4(camera->position, shift);
+	size = sub4(box_max, box_min);
+	camera->zoom_exp -= log2f(0.5f * fmaxf(size.x, size.y) / FIT_TARGET_SIZE);
 }
 
 void	camera_move(t_camera *camera, t_camera_dir dir, float amount)
