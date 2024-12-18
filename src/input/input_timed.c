@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:59:50 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/18 20:08:50 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/18 20:19:54 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,26 @@
 
 static void	input_camera_move(t_fdf *fdf, int arg, float time)
 {
-	camera_move(&fdf->camera, (t_camera_dir)arg, time * 10);
+	float	speed;
+
+	speed = 10;
+	if (mlx_is_key_down(fdf->mlx, MLX_KEY_LEFT_SHIFT))
+		speed = 50;
+	else if (mlx_is_key_down(fdf->mlx, MLX_KEY_LEFT_CONTROL))
+		speed = 2;
+	camera_move(&fdf->camera, (t_camera_dir)arg, time * speed);
 }
 
 static void	input_camera_rotate(t_fdf *fdf, int arg, float time)
 {
-	camera_rotate(&fdf->camera, (t_camera_dir)arg, time * 90);
+	float	speed;
+
+	speed = 45;
+	if (mlx_is_key_down(fdf->mlx, MLX_KEY_LEFT_SHIFT))
+		speed = 180;
+	else if (mlx_is_key_down(fdf->mlx, MLX_KEY_LEFT_CONTROL))
+		speed = 10;
+	camera_rotate(&fdf->camera, (t_camera_dir)arg, time * speed);
 }
 
 static const t_input_timed	g_input_timed[] = {
