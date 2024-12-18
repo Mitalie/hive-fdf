@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:02:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/17 17:41:33 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:17:06 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	fdf_fit(t_fdf *fdf)
 	t_vec4	box_min;
 	t_vec4	box_max;
 
-	if (fdf->camera.perspective)
+	if (fdf->camera.mode != CAM_ORTHO)
 		return ;
 	camera_transform = camera_transformation(&fdf->camera);
 	height_scale = powf(2, fdf->height_scale_exp);
@@ -76,10 +76,10 @@ void	fdf_draw(t_fdf *fdf)
 		return ;
 	fdf->need_redraw = false;
 	transform = camera_transformation(&fdf->camera);
-	if (fdf->camera.perspective)
-		z_image_clear(fdf->image, 0.0f, 0x000000ff);
-	else
+	if (fdf->camera.mode == CAM_ORTHO)
 		z_image_clear(fdf->image, -INFINITY, 0x000000ff);
+	else
+		z_image_clear(fdf->image, 0.0f, 0x000000ff);
 	height_scale = powf(2, fdf->height_scale_exp);
 	fdf->mesh.scale.y = height_scale;
 	draw_mesh(fdf->image, &fdf->mesh, transform);

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:02:26 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/17 15:04:24 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:17:55 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,10 @@ t_mat4	camera_transformation(t_camera *camera)
 	transform = mul_mm4(next, transform);
 	next = rotation_x(-camera->elevation_deg);
 	transform = mul_mm4(next, transform);
-	if (camera->perspective)
-		next = camera_projection_perspective(camera);
-	else
+	if (camera->mode == CAM_ORTHO)
 		next = camera_projection_orthograpic(camera);
+	else
+		next = camera_projection_perspective(camera);
 	transform = mul_mm4(next, transform);
 	return (transform);
 }

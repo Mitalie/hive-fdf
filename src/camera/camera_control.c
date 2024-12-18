@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:48:24 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/17 16:13:56 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:17:53 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ void	camera_reset(t_camera *camera)
 	camera->azimuth_deg = 45;
 	camera->elevation_deg = -35.2643897f;
 	camera->zoom_exp = 0;
-	camera->perspective = false;
-	camera->move_angled = false;
+	camera->mode = CAM_ORTHO;
 }
 
 /*
@@ -35,18 +34,21 @@ void	camera_reset(t_camera *camera)
 	distance calculation. It's not used anyway, but we don't have a separate
 	vec3 type.
 */
-void	camera_toggle_mode(t_camera *camera)
+void	camera_next_mode(t_camera *camera)
 {
-	float	camera_dist;
-	float	zoom_exp_delta;
+	float			camera_dist;
+	float			zoom_exp_delta;
+	t_camera_mode	new_mode;
 
+	new_mode = (camera->mode + 1) % NUM_CAM_MODES;
 	camera->position.w = 0;
 	camera_dist = sqrtf(dot4(camera->position, camera->position));
 	zoom_exp_delta = log2f(camera_dist);
-	if (camera->perspective)
-		zoom_exp_delta = -zoom_exp_delta;
-	camera->zoom_exp += zoom_exp_delta;
-	camera->perspective = !camera->perspective;
+	if (new_mode == CAM_ORTHO)
+		camera->zoom_exp -= zoom_exp_delta;
+	if (camera->mode == CAM_ORTHO)
+		camera->zoom_exp += zoom_exp_delta;
+	camera->mode = new_mode;
 }
 
 /*
@@ -94,7 +96,7 @@ void	camera_move(t_camera *camera, t_camera_dir dir, float amount)
 			amount * ((dir == CAM_BACK) - (dir == CAM_FRONT)),
 			0);
 	transform = rotation_y(camera->azimuth_deg);
-	if (camera->perspective && camera->move_angled)
+	if (camera->mode == CAM_PERSP_FLYING)
 	{
 		transform_pre = rotation_x(camera->elevation_deg);
 		transform = mul_mm4(transform, transform_pre);
