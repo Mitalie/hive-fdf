@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/17 17:07:09 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/18 19:51:44 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,7 @@ SRCS := $(addprefix $(SRCDIR)/,\
 	camera/camera_control.c \
 	camera/camera_transform.c \
 	input/input_timed.c \
+	input/input_event.c \
 	z_image.c \
 )
 

@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 18:00:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/12 21:12:25 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/18 20:03:48 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,32 @@ typedef struct s_input_timed
 	t_input_timed_func	*func;
 	int					arg;
 }	t_input_timed;
+
+typedef void (t_input_event_func)(t_fdf *fdf, int arg);
+
+typedef struct s_input_event
+{
+	keys_t				key;
+	action_t			action;
+	t_input_event_func	*func;
+	int					arg;
+}	t_input_event;
+
+typedef enum e_input_dir
+{
+	INPUT_UP,
+	INPUT_DOWN,
+}	t_input_dir;
+
+/*
+	For merging simple argumentless actions in a single function...
+*/
+typedef enum e_input_simple_action
+{
+	INPUT_CLOSE,
+	INPUT_RESET,
+	INPUT_MODE,
+	INPUT_FIT,
+}	t_input_simple_action;
 
 #endif
