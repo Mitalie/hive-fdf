@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:48:24 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/18 18:17:53 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:26:43 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,21 @@ void	camera_fit_box(t_camera *camera, t_vec4 box_min, t_vec4 box_max)
 	camera->zoom_exp -= log2f(0.5f * fmaxf(size.x, size.y) / FIT_TARGET_SIZE);
 }
 
+/*
+	Front/back are considered primary controls, while up/down are secondary.
+
+	In orthographic projection, front/back move the camera in the view plane,
+	and up/down adjust the near clip distance.
+
+	In flying perspective projection, front/back move towards or away from what
+	the camera is looking at, and up/down move in the view plane.
+
+	In floating perspective projection, front/back are forced to be horizontal
+	and up/down are forced to be vertical in the world space.
+*/
 void	camera_move(t_camera *camera, t_camera_dir dir, float amount)
 {
 	t_mat4	transform;
-	t_mat4	transform_pre;
 	t_vec4	movement;
 
 	movement = vec4(
@@ -97,10 +108,9 @@ void	camera_move(t_camera *camera, t_camera_dir dir, float amount)
 			0);
 	transform = rotation_y(camera->azimuth_deg);
 	if (camera->mode == CAM_PERSP_FLYING)
-	{
-		transform_pre = rotation_x(camera->elevation_deg);
-		transform = mul_mm4(transform, transform_pre);
-	}
+		transform = mul_mm4(transform, rotation_x(camera->elevation_deg));
+	if (camera->mode == CAM_ORTHO)
+		transform = mul_mm4(transform, rotation_x(camera->elevation_deg + 90));
 	movement = mul_mv4(transform, movement);
 	camera->position = add4(camera->position, movement);
 }
