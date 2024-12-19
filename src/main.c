@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/19 20:54:06 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:34:04 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 #include "input.h"
 #include "map.h"
+#include "str_util.h"
 #include "z_image.h"
 
 static void	key_hook(mlx_key_data_t key_data, void *param)
@@ -38,6 +39,18 @@ static void	loop_hook(void *param)
 	fdf_draw(fdf);
 }
 
+static bool	create_mlx(mlx_t **mlx, const char *filename)
+{
+	char	*title;
+
+	title = str_join("FdF: ", filename);
+	if (!title)
+		return (false);
+	*mlx = mlx_init(1500, 1125, title, true);
+	free(title);
+	return (*mlx);
+}
+
 int	main(int argc, char **argv)
 {
 	t_fdf	fdf;
@@ -46,8 +59,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if (!map_load(&fdf.mesh, argv[1]))
 		return (2);
-	fdf.mlx = mlx_init(1500, 1125, "fdf", true);
-	if (!fdf.mlx)
+	if (!create_mlx(&fdf.mlx, argv[1]))
 		return (3);
 	fdf.image = 0;
 	fdf_recreate_image(&fdf);
