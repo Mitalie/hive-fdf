@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/13 17:48:20 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:58:06 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,15 @@ static void	line_draw_loop(t_z_image *image, t_line_data *line)
 	}
 }
 
+/*
+	With extremely long lines, insufficient numeric precision in clipping can
+	create end points with very low or zero W coordinate. These project X and Y
+	far outside the view bounds or even to infinity, which causes very slow or
+	infinite loop in line_draw_loop. Skip drawing these corrupted lines to
+	prevent a hang. Limit of 1.1 gives more than enough margin for normal
+	rounding error with reasonably long lines.
+*/
+
 void	draw_line(t_z_image *image, t_vertex a, t_vertex b)
 {
 	t_line_data	line;
@@ -163,6 +172,11 @@ void	draw_line(t_z_image *image, t_vertex a, t_vertex b)
 	if (!line_calculate_clip(&line))
 		return ;
 	line_normalize(&line);
+	if (fabsf(line.a.pos.x) > 1.1f
+		|| fabsf(line.a.pos.y) > 1.1f
+		|| fabsf(line.b.pos.x) > 1.1f
+		|| fabsf(line.b.pos.y) > 1.1f)
+		return ;
 	line_to_pixel_coords(&line, image->mlx_img->width, image->mlx_img->height);
 	line_draw_loop(image, &line);
 }
