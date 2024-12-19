@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/19 19:47:24 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 20:54:06 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ int	main(int argc, char **argv)
 	t_fdf	fdf;
 
 	if (argc != 2)
-		return (3);
+		return (1);
 	if (!map_load(&fdf.mesh, argv[1]))
 		return (2);
 	fdf.mlx = mlx_init(1500, 1125, "fdf", true);
 	if (!fdf.mlx)
-		return (1);
+		return (3);
 	fdf.image = 0;
 	fdf_recreate_image(&fdf);
 	fdf_reset(&fdf);
@@ -60,4 +60,6 @@ int	main(int argc, char **argv)
 	mlx_terminate(fdf.mlx);
 	free(fdf.mesh.lines);
 	free(fdf.mesh.vertices);
+	if (!fdf.image)
+		return (4);
 }
