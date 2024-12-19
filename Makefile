@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/19 21:08:58 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/19 21:53:10 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,9 @@ OBJS := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 BINS := $(NAME)
 $(NAME): $(OBJS) $(MLX42)
 $(NAME): tgt_LDLIBS += -lm $(MLX42LIBS)
+
+# Bonus is built in, no separate bonus code or program
+BONUS := $(NAME)
 
 # Generic utility targets
 .DEFAULT_GOAL := all
