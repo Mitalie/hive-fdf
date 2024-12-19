@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:45:51 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/19 19:47:30 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 20:04:49 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ bool	file_reader_open(
 	if (!reader->buf)
 		return (false);
 	reader->fd = open(filename, O_RDONLY);
+	if (reader->fd < 0)
+		free(reader->buf);
 	return (reader->fd >= 0);
 }
 
