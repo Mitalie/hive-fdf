@@ -6,13 +6,17 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:29:17 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/16 22:07:45 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:47:13 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mesh.h"
+
 #include <math.h>
+#include <stdint.h>
+
 #include "line.h"
+#include "vec_mat.h"
 
 static t_mat4	mesh_combine_transform(t_mesh *mesh, t_mat4 transform)
 {

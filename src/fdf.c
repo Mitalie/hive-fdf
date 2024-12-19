@@ -6,15 +6,20 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:02:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/18 18:17:06 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:47:38 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
 #include <math.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include "MLX42/MLX42.h"
+
 #include "camera.h"
 #include "mesh.h"
+#include "vec_mat.h"
 #include "z_image.h"
 
 /*

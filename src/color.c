@@ -6,12 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:27:47 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/04 17:45:33 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:47:41 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "color.h"
+
 #include <math.h>
+#include <stdint.h>
 
 uint32_t	color_interp(uint32_t a, uint32_t b, float t)
 {

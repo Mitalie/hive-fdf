@@ -6,12 +6,15 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:52:40 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 16:49:31 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:47:03 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rotation.h"
+
 #include <math.h>
+
+#include "vec_mat.h"
 
 t_mat4	rotation_x(float angle_deg)
 {

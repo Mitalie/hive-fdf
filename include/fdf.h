@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 20:39:26 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/17 17:41:34 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:51:33 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 
 # include <stdbool.h>
 # include "MLX42/MLX42.h"
-# include "z_image.h"
-# include "mesh.h"
+
 # include "camera.h"
+# include "mesh.h"
+# include "z_image.h"
 
 typedef struct s_fdf {
 	mlx_t		*mlx;

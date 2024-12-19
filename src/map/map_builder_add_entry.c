@@ -6,11 +6,19 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:13:19 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/02 17:57:51 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:48:15 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map_internal.h"
+
+#include <stdbool.h>
+#include <stdint.h>
+
+#include "buffer.h"
+#include "mesh.h"
+#include "vec_mat.h"
+#include "vertex.h"
 
 static bool	map_builder_append_vertex(
 	t_map_builder *builder, int32_t height, uint32_t color)

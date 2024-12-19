@@ -6,13 +6,16 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 19:48:24 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/18 18:26:43 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:48:46 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "camera.h"
+
 #include <math.h>
+
 #include "rotation.h"
+#include "vec_mat.h"
 
 void	camera_reset(t_camera *camera)
 {

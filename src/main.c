@@ -6,17 +6,19 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:58:34 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/18 19:54:26 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:47:24 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+#include <stdbool.h>
 #include <stdlib.h>
 #include "MLX42/MLX42.h"
-#include "z_image.h"
-#include "camera.h"
-#include "map.h"
+
 #include "input.h"
+#include "map.h"
+#include "z_image.h"
 
 static void	key_hook(mlx_key_data_t key_data, void *param)
 {

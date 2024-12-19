@@ -6,13 +6,16 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:02:26 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/18 20:28:03 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:48:43 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "camera.h"
+
 #include <math.h>
+
 #include "rotation.h"
+#include "vec_mat.h"
 
 /*
 	For perspective projection, without a near clip plane in front of the camera

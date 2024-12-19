@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:52:16 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/02 17:56:16 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:48:05 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdbool.h>
 # include <stdint.h>
+
 # include "buffer.h"
 # include "mesh.h"
 

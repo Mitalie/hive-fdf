@@ -6,13 +6,15 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:45:51 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/11 17:03:41 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:47:30 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "file_reader.h"
+
 #include <errno.h>
 #include <fcntl.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
 

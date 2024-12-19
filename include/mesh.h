@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:24:11 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/16 22:07:34 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:51:16 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 # define MESH_H
 
 # include <stdint.h>
-# include "z_image.h"
+
 # include "vec_mat.h"
 # include "vertex.h"
+# include "z_image.h"
 
 typedef struct s_line
 {

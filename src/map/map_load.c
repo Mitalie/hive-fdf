@@ -6,13 +6,18 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:10:54 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/02 17:53:31 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:48:01 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map.h"
 #include "map_internal.h"
+
+#include <stdbool.h>
+#include <stddef.h>
+
 #include "file_reader.h"
+#include "mesh.h"
 #include "parse_int.h"
 
 static bool	map_load_parse_entry(t_file_reader *reader, t_map_entry *entry)

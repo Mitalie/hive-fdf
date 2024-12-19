@@ -6,12 +6,16 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 19:28:27 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/11 16:23:41 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:46:55 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "z_image.h"
+
 #include <stdlib.h>
+#include <stdint.h>
+
+#include "MLX42/MLX42.h"
 
 t_z_image	*z_image_new(mlx_t *mlx, uint32_t width, uint32_t height)
 {

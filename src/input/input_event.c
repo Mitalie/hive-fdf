@@ -6,12 +6,19 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 18:30:55 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/18 20:09:10 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:48:36 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 #include "input_internal.h"
+
+#include <stdbool.h>
+#include <stddef.h>
+#include "MLX42/MLX42.h"
+
+#include "camera.h"
+#include "fdf.h"
 
 static void	input_simple_action(t_fdf *fdf, int arg)
 {

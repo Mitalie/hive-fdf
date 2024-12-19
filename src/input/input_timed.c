@@ -6,13 +6,19 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:59:50 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/18 20:19:54 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:48:28 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 #include "input_internal.h"
+
+#include <stdbool.h>
+#include <stddef.h>
+#include "MLX42/MLX42.h"
+
 #include "camera.h"
+#include "fdf.h"
 
 static void	input_camera_move(t_fdf *fdf, int arg, float time)
 {

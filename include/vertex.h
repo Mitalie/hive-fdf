@@ -6,7 +6,7 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 18:18:28 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/04 17:49:28 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:51:08 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VERTEX_H
 
 # include <stdint.h>
+
 # include "vec_mat.h"
 
 typedef struct s_vertex

@@ -6,15 +6,21 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:05:25 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/19 17:58:06 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:48:21 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "line.h"
 #include "line_internal.h"
+
 #include <math.h>
+#include <stddef.h>
+#include <stdbool.h>
 #include <stdint.h>
+
 #include "color.h"
+#include "vec_mat.h"
+#include "z_image.h"
 
 /*
 	The part of the world that is visible on the screen is the clip volume,

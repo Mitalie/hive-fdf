@@ -6,11 +6,13 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:11:52 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/25 20:07:51 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:47:08 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse_int.h"
+
+#include <stdbool.h>
 #include <stdint.h>
 
 bool	parse_int32(

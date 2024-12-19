@@ -6,13 +6,15 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 15:47:00 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/22 17:43:20 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:47:45 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buffer.h"
-#include <stdlib.h>
+
+#include <stdbool.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 void	buffer_init(t_buffer *b)
 {

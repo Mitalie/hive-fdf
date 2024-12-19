@@ -6,12 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:59:28 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/18 18:36:07 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:51:27 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INPUT_H
 # define INPUT_H
+
+# include "MLX42/MLX42.h"
 
 # include "fdf.h"
 

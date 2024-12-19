@@ -6,12 +6,18 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:12:53 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/16 15:56:20 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:48:09 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map_internal.h"
+
+#include <stdbool.h>
 #include <stdlib.h>
+
+#include "buffer.h"
+#include "mesh.h"
+#include "vec_mat.h"
 
 void	map_builder_init(t_map_builder *builder)
 {

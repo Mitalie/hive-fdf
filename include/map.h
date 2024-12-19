@@ -6,12 +6,14 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:46:57 by amakinen          #+#    #+#             */
-/*   Updated: 2024/11/22 18:24:00 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:51:20 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_H
 # define MAP_H
+
+# include <stdbool.h>
 
 # include "mesh.h"
 

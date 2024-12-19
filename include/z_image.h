@@ -6,14 +6,16 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 19:19:54 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/09 20:32:10 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:51:04 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef Z_IMAGE_H
 # define Z_IMAGE_H
 
+# include <stdint.h>
 # include "MLX42/MLX42.h"
+
 # include "vec_mat.h"
 
 typedef struct s_z_image

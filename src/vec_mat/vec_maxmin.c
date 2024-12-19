@@ -6,11 +6,12 @@
 /*   By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 16:04:20 by amakinen          #+#    #+#             */
-/*   Updated: 2024/12/16 16:15:48 by amakinen         ###   ########.fr       */
+/*   Updated: 2024/12/19 19:47:51 by amakinen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec_mat.h"
+
 #include <math.h>
 
 t_vec4	max4(t_vec4 a, t_vec4 b)
