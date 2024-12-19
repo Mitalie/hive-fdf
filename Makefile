@@ -6,7 +6,7 @@
 #    By: amakinen <amakinen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/04 15:48:20 by amakinen          #+#    #+#              #
-#    Updated: 2024/12/18 19:51:44 by amakinen         ###   ########.fr        #
+#    Updated: 2024/12/19 21:08:58 by amakinen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ OPT_FLAGS := -flto -O3
 SRCS := $(addprefix $(SRCDIR)/,\
 	main.c \
 	fdf.c \
+	str_util.c \
 	color.c \
 	line/line.c \
 	mesh.c \
